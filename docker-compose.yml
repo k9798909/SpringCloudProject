@@ -1,0 +1,23 @@
+version: '1.01'
+services:
+  redis:
+     build: ./redis
+     image: redis
+     ports:
+       - 6379:6379
+  cart:
+     build: ./cart-app
+     image: my-golang-app
+     ports:
+      - 8088:8088
+     depends_on:
+      - redis
+  postgres:
+    build: ./postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres

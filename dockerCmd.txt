@@ -1,0 +1,13 @@
+docker pull redis
+docker run -d --name redis-stack-server -p 6379:6379 redis/redis-stack-server:latest
+docker exec -it redis-stack-server redis-cli
+
+config get requirepass
+
+network create backend-driver
+
+docker-compose up -d
+docker-compose down
+docker-compose up --build
+
+
