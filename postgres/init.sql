@@ -15,7 +15,7 @@ CREATE TABLE product (
 CREATE TABLE product_image (
     id SERIAL PRIMARY KEY,
     image BYTEA,
-    product_id VARCHAR(12) NOT NULL,
+    product_id VARCHAR(20) NOT NULL,
     FOREIGN KEY (product_id) REFERENCES product(id)
 );
 
@@ -25,6 +25,21 @@ INSERT INTO product (name, description, price, quantity, crtuser, crttime) VALUE
 ('Product 3', 'This is product 3', 300.00, 30, 'user3', NOW()),
 ('Product 4', 'This is product 4', 400.00, 40, 'user4', NOW()),
 ('Product 5', 'This is product 5', 500.00, 50, 'user5', NOW());
+
+
+INSERT INTO product_image (image, product_id)
+VALUES (pg_read_binary_file('/docker-entrypoint-initdb.d/product1.png'),'PROD_0000000001');
+INSERT INTO product_image (image, product_id)
+VALUES (pg_read_binary_file('/docker-entrypoint-initdb.d/product2.jpg'),'PROD_0000000002');
+INSERT INTO product_image (image, product_id)
+VALUES (pg_read_binary_file('/docker-entrypoint-initdb.d/product3.jpg'),'PROD_0000000003');
+INSERT INTO product_image (image, product_id)
+VALUES (pg_read_binary_file('/docker-entrypoint-initdb.d/product1.png'),'PROD_0000000004');
+INSERT INTO product_image (image, product_id)
+VALUES (pg_read_binary_file('/docker-entrypoint-initdb.d/product2.jpg'),'PROD_0000000005');
+
+
+
 
 
 

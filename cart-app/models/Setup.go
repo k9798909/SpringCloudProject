@@ -49,11 +49,6 @@ func SAddCartProduct(cartProduct CartProduct) {
 		panic(err)
 	}
 
-	// addMap := make([]map[string]interface{}, 0)
-	// addMap = append(addMap, map[string]interface{}{
-	// 	cartProduct.ProductId: string(json),
-	// })
-
 	_, resultErr := DB.HMSet(cartProduct.UserId, map[string]interface{}{
 		cartProduct.ProductId: string(json),
 	}).Result()

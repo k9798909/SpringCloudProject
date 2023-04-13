@@ -1,0 +1,26 @@
+Minikube是一個用於本地開發和測試Kubernetes集群的工具，它可以在單個本地計算機上啟動一個小型的Kubernetes集群，以便開發人員可以在自己的電腦上運行和測試Kubernetes應用程序。Minikube通常用於在本地進行單元測試、集成測試和功能測試。
+
+Minikube的主要特點包括：
+
+簡單易用：Minikube可以在幾分鐘內啟動一個本地Kubernetes集群，而不需要任何其他的設置或管理。
+高度可定制：Minikube支持多種Kubernetes版本、虛擬機管理程序和容器技術。
+本地開發：Minikube可以幫助開發人員在本地機器上進行Kubernetes應用程序的開發和測試，從而可以更快速地迭代和測試應用程序。
+跨平台：Minikube支持Windows、macOS和Linux等操作系統。
+總之，Minikube是一個用於本地開發和測試Kubernetes應用程序的輕量級工具，可以幫助開發人員更容易地進行Kubernetes應用程序的開發、測試和部署。
+
+
+安裝Machine
+1.New-Item -Path 'd:\' -Name 'minikube' -ItemType Directory -Force
+2.$oldPath = [Environment]::GetEnvironmentVariable('Path', [EnvironmentVariableTarget]::Machine)
+if ($oldPath.Split(';') -inotcontains 'D:\minikube'){ `
+  [Environment]::SetEnvironmentVariable('Path', $('{0};D:\minikube' -f $oldPath), [EnvironmentVariableTarget]::Machine) `
+}
+
+kubectl apply -f ./
+
+安裝kubernetes
+1.choco install kubernetes-kompose
+kompose convert -f docker-compose.yml
+
+
+kubectl apply -f

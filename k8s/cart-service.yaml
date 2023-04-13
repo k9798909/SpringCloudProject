@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: D:\Chocolatey\lib\kubernetes-kompose\tools\kompose.exe convert
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: cart
+  name: cart
+spec:
+  ports:
+    - name: "8088"
+      port: 8088
+      targetPort: 8088
+  selector:
+    io.kompose.service: cart
+status:
+  loadBalancer: {}

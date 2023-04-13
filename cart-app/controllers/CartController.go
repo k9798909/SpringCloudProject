@@ -3,6 +3,7 @@ package controllers
 import (
 	"cart-app/models"
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,17 +17,18 @@ type CartDto struct {
 
 func FindByUserId(c *gin.Context) {
 	userid := c.Param("userid")
-	vo, err := models.DB.HGetAll(userid).Result()
 
-	dtoArray := []CartDto{}
+	result, err := models.DB.HGetAll(userid).Result()
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"data": dtoArray})
+		log.Panic(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"data": nil})
 	}
 
-	for _, e := range vo {
+	dtoArray := []CartDto{}
+	for _, data := range result {
 		dto := CartDto{}
-		json.Unmarshal([]byte(e), &dto)
+		json.Unmarshal([]byte(data), &dto)
 		dtoArray = append(dtoArray, dto)
 	}
 

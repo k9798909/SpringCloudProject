@@ -1,17 +1,18 @@
 version: '1.01'
 services:
   redis:
-     build: ./redis
-     image: redis
-     ports:
-       - 6379:6379
-  cart:
-     build: ./cart-app
-     image: my-golang-app
-     ports:
+    build: ./redis
+    image: redis
+    ports:
+      - 6379:6379
+  cart-service:
+    build: ./cart-app
+    image: my-golang-app
+    ports:
       - 8088:8088
-     depends_on:
+    depends_on:
       - redis
+      - eureka-server
   postgres:
     build: ./postgres
     image: postgres
@@ -21,3 +22,24 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+  product-service:
+    build: ./product-service
+    image: product-service
+    ports:
+      - 8087:8087
+    depends_on:
+      - postgres
+      - gatewar-server
+      - eureka-server
+  gatewar-server:
+    build: ./gatewar-server
+    image: gatewar-server
+    ports:
+      - 8080:8080
+    depends_on:
+      - eureka-server
+  eureka-server:
+    build: ./eureka-server
+    image: eureka-server
+    ports:
+      - 8761:8761
