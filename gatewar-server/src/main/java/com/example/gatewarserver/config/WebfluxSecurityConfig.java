@@ -8,12 +8,6 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.InMemoryReactiveClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 import com.example.gatewarserver.config.auth.JwtAuthenticationManager;
@@ -54,14 +48,14 @@ public class WebfluxSecurityConfig {
             .pathMatchers("/product-service/product","/login").permitAll()
             .anyExchange().authenticated()
             .and()
-	        .oauth2Login()
-	        .and()
 	        .formLogin().disable()
+//	        .oauth2Login()
 	        ;
 	    // @formatter:on
 		return http.build();
 	}
-
+	
+	/**
 	@Bean
 	public ReactiveClientRegistrationRepository clientRegistrationRepository() {
 		return new InMemoryReactiveClientRegistrationRepository(this.googleClientRegistration());
@@ -85,6 +79,7 @@ public class WebfluxSecurityConfig {
 				.build();
 		// @formatter:on
 	}
+	*/
 
 	@Bean
 	public ReactiveUserDetailsService userDetailsService() {
