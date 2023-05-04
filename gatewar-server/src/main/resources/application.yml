@@ -1,3 +1,10 @@
 spring:
   profiles:
     active: "@activeProfile@"
+    
+logging:
+  level:
+    root: INFO
+    
+jwt:
+  key: gatewayHMAC256
