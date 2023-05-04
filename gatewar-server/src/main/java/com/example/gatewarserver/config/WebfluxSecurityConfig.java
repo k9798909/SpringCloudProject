@@ -70,8 +70,8 @@ public class WebfluxSecurityConfig {
 	private ClientRegistration googleClientRegistration() {
 		// @formatter:off
 		return ClientRegistration.withRegistrationId("google")
-				.clientId("74068164828-5eqa05hmdi37mr6jvb2t5kcvih7gidpq.apps.googleusercontent.com")
-				.clientSecret("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")
+				.clientId("")
+				.clientSecret("")
 				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.redirectUri("http://localhost:8080/login/oauth2/code/google")
