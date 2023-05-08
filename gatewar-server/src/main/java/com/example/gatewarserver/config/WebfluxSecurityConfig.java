@@ -2,6 +2,7 @@ package com.example.gatewarserver.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -45,7 +46,8 @@ public class WebfluxSecurityConfig {
 	        .authenticationManager(jwtAuthenticationManager)
             .securityContextRepository(jwtSecurityContextRepository)
             .authorizeExchange()
-            .pathMatchers("/product-service/product","/login").permitAll()
+            .pathMatchers("/login").permitAll()
+            .pathMatchers(HttpMethod.GET,"/product-service/product","/product-service/product/*","/product-service/product/img/*").permitAll()
             .anyExchange().authenticated()
             .and()
 	        .formLogin().disable()

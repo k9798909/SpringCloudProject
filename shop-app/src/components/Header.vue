@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
+import usersService from '@/services/UsersService'
 
 interface Ilink {
   name: string
@@ -33,19 +34,22 @@ let linkArray: Ilink[] = [
   }
 ]
 
-let isLogin: Boolean = false
+let isLogin: boolean = usersService.isLogin()
+let name: string | null = usersService.getName()
+const state = reactive({ isLogin, name })
 
-const state = reactive({ isLogin: isLogin })
-
-const funcLogin = (): void => {
-  state.isLogin = !state.isLogin
+const logoutEvent = () => {
+  usersService.logout()
+  window.location.href = '/login'
 }
 </script>
 
 <template>
   <header>
     <div class="logo-area">
-      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+      <a href="/index">
+        <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+      </a>
     </div>
     <nav>
       <div class="link-bar">
@@ -53,10 +57,10 @@ const funcLogin = (): void => {
       </div>
     </nav>
     <div class="login-area" v-if="!state.isLogin">
-      <button href="#" v-on:click="funcLogin()">登入</button>
+      <a href="/login">登入</a>
     </div>
     <div class="login-area" v-if="state.isLogin">
-      你好 無測試<span> </span><button href="#" v-on:click="funcLogin()">登出</button>
+      {{state.name}} 你好! <span> </span><button v-on:click="logoutEvent">登出</button>
     </div>
   </header>
 </template>
@@ -77,14 +81,16 @@ header {
   backdrop-filter: saturate(180%) blur(20px);
   padding: 0.5rem 3rem;
 
-  a {
+  nav a,
+  .login-area a {
     color: $font-color;
     transition: ease-in-out color 0.15s;
     padding: 0.3rem;
     font-size: 1.2rem;
   }
 
-  a:hover {
+  nav a:hover,
+  .login-area a:hover {
     color: $hover-color;
   }
 
@@ -127,8 +133,6 @@ header {
     a {
       padding: 0.3rem 2rem;
     }
-    
   }
-
 }
 </style>

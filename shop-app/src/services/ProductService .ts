@@ -1,14 +1,14 @@
 import type Product from '@/type/dto/ProductDto'
-import http from '@/http/http-common'
+import getHttp from '@/http'
 import type ResponseData from '@/type/ResponseData'
 
 class ProductService {
   getAll(): Promise<ResponseData<Product[]>> {
-    return http.get('/product')
+    return getHttp().get('/product-service/product')
   }
 
   get(id: any): Promise<ResponseData<Product>> {
-    return http.get(`/product/${id}`)
+    return getHttp().get(`/product-service/product/${id}`)
   }
 }
 

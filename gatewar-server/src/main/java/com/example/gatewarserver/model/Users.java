@@ -13,19 +13,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Table(name = "users")
 public class Users implements UserDetails, Serializable {
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-    private String id;
+	private String id;
 	private String username;
 	private String password;
+	private String name;
 	@Transient
 	private boolean active = true;
 	@Transient
 	private Set<GrantedAuthority> roles = new HashSet<GrantedAuthority>();
-	
+
 	public Users(String username, String password) {
 		super();
 		this.username = username;
@@ -54,6 +55,14 @@ public class Users implements UserDetails, Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override

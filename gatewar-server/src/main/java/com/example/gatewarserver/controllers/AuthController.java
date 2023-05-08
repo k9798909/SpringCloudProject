@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.gatewarserver.model.Users;
 import com.example.gatewarserver.repository.UserRepository;
 import com.example.gatewarserver.utils.AuthJwtUtils;
 
@@ -28,22 +29,38 @@ public class AuthController {
 	}
 
 	@PostMapping("/login")
-	public Mono<ResponseEntity<AuthRes>> login(@RequestBody AuthReq req) {
+	public Mono<ResponseEntity<LoginRes>> login(@RequestBody LoginReq req) {
 		return userRepository.findByUsername(req.username)
-				.filter(userDetails -> passwordEncoder.matches(req.password(),userDetails.getPassword()))
-				.map(userDetails -> ResponseEntity.ok(new AuthRes(authJwtUtils.generate(userDetails.getUsername()))))
+				.filter(userDetails -> passwordEncoder.matches(req.password(), userDetails.getPassword()))
+				.map(userDetails -> (Users) userDetails)
+				.map(users -> ResponseEntity
+						.ok(new LoginRes(users.getName(), authJwtUtils.generate(users.getUsername()))))
 				.switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()));
 	}
-	
+
+	@PostMapping("/getUsername")
+	public Mono<ResponseEntity<GetUsernameRes>> getUsername(@RequestBody GetUsernameReq req) {
+		String username = authJwtUtils.getUsername(req.token)
+				.orElseThrow(() -> new RuntimeException("此 token 無法解析成username"));
+		GetUsernameRes res = new GetUsernameRes(username);
+		return Mono.just(ResponseEntity.ok(res));
+	}
+
 	@GetMapping("/hello")
 	public ResponseEntity<String> hello() {
 		return ResponseEntity.ok("working...");
 	}
 
-	public record AuthReq(String username, String password) {
+	public record LoginReq(String username, String password) {
 	}
-	
-	public record AuthRes(String token) {
+
+	public record LoginRes(String name, String token) {
+	}
+
+	public record GetUsernameReq(String token) {
+	}
+
+	public record GetUsernameRes(String username) {
 	}
 
 }

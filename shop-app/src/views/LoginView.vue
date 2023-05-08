@@ -1,0 +1,101 @@
+<script setup lang="ts">
+import type LoginDto from '@/type/dto/LoginDto'
+import usersService from '@/services/UsersService'
+import { reactive } from 'vue'
+import { ViewMsg } from '@/enums/MsgEnum'
+import { NetworkErrorCode } from '@/enums/HttpEnum'
+import type { AxiosError } from 'axios'
+
+let loginDto: LoginDto = {
+  username: '',
+  password: ''
+}
+const state = reactive({ loginDto, msg: '' })
+const loginEvent = async () => {
+  try {
+    state.msg = ''
+    if (!(state.loginDto.username && state.loginDto.password)) {
+      state.msg = '請輸入帳號及密碼!'
+      return
+    }
+    await usersService.login(state.loginDto)
+    window.location.href = '/index'
+  } catch (error) {
+    let axiosError: AxiosError = error as AxiosError
+    if (NetworkErrorCode.Unauthorized == axiosError.response?.status) {
+      state.msg = ViewMsg.InvalidUsernameOrPassword
+      return
+    }
+    console.error('login error:', error)
+    state.msg = ViewMsg.ServerError
+  }
+}
+</script>
+
+<template>
+  <main class="main">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-3 form-signin">
+          <form>
+            <h1 class="h3 mb-3 fw-normal">使用者登入</h1>
+            <div class="form-floating">
+              <input
+                id="floatingInput"
+                name="username"
+                class="form-control"
+                placeholder="帳號"
+                v-model="state.loginDto.username"
+                required="true"
+              />
+              <label for="floatingInput">帳號</label>
+            </div>
+            <div class="form-floating">
+              <input
+                id="floatingPassword"
+                name="password"
+                type="password"
+                class="form-control"
+                placeholder="密碼"
+                required="true"
+                v-model="state.loginDto.password"
+              />
+              <label for="floatingPassword">密碼</label>
+            </div>
+            <div v-if="state.msg" class="alert alert-danger" role="alert">{{ state.msg }}</div>
+            <button type="button" class="w-100 btn btn-lg btn-success" @click="loginEvent">
+              登入
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</template>
+<style lang="scss" scoped>
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+
+  .form-floating:focus-within {
+    z-index: 2;
+  }
+
+  input[name='username'] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  input[name='password'] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .alert-danger {
+    font-size: 1em;
+    padding: 10px;
+  }
+}
+</style>

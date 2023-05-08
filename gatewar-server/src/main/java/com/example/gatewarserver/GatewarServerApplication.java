@@ -42,6 +42,7 @@ public class GatewarServerApplication {
 	public CommandLineRunner start(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		return args -> {
 			Users users = new Users("test", passwordEncoder.encode("test"));
+			users.setName("測試先生");
 			userRepository.deleteAll().log().subscribe();
 			userRepository.save(users).log().subscribe();
 			userRepository.findAll().log().subscribe();

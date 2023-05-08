@@ -4,7 +4,7 @@ export interface Prop {
   product: ProductDto
 }
 const props = defineProps<Prop>()
-const imgUrl = `/api/product/img/${props.product.id}`
+const imgUrl = `/api/product-service/product/img/${props.product.id}`
 </script>
 <template>
   <div class="card mb-4 shadow-sm product-card">
