@@ -7,7 +7,7 @@
 <p>4.商品資料:springboot+postgres</p>
 <p>5.登入系統:springsecurity</p>
 <p>6.管理微服務:springcloud</p>
-<p>目前已實作</p>1
+<p>目前已實作</p>
 <p>1.使用docker，並撰寫docker-compose。</p>
 <p>2.前端頁面使用vue3使用技術typescript、scss、BootstrapVue、pinia、axios。</p>
 <p>3.購物車服務cart-app，使用golang撰寫，框架使用gin，資料庫選擇redis。</p>
