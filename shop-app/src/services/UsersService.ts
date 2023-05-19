@@ -2,16 +2,18 @@ import type LoginDto from '@/type/dto/LoginDto'
 import type LoginResDto from '@/type/dto/LoginResDto'
 import getHttp from '@/http'
 import type ResponseData from '@/type/ResponseData'
+import useUsersStore from '@/stores/UseUsersStore'
+
+const usersStore = useUsersStore();
 
 class UsersService {
   async login(loginDto: LoginDto) {
     let res: ResponseData<LoginResDto> = await getHttp().post('/login', loginDto)
-    sessionStorage.setItem('token', res.data.token)
-    sessionStorage.setItem('name', res.data.name)
+    usersStore.login(res.data);
   }
 
   getName(): string | null {
-    return sessionStorage.getItem('name')
+    return usersStore.getName()?''
   }
 
   isLogin(): boolean {

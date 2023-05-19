@@ -3,6 +3,8 @@ package com.example.gatewarserver.config.auth;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +21,7 @@ import reactor.core.publisher.Mono;
  *
  */
 public class JwtAuthenticationManager implements ReactiveAuthenticationManager {
+	private static Logger log = LoggerFactory.getLogger(JwtAuthenticationManager.class);
 
 	private AuthJwtUtils authJwtUtils;
 
@@ -33,10 +36,16 @@ public class JwtAuthenticationManager implements ReactiveAuthenticationManager {
 		if (jwt.isEmpty()) {
 			return Mono.empty();
 		}
+		
+		if (!authJwtUtils.verify(jwt.get())) {
+			log.error("發生jwt驗證失敗 jwt:[{}]",jwt.get());
+			return Mono.empty();
+		}
 
 		Optional<String> username = authJwtUtils.getUsername(jwt.get());
-
-		if (!authJwtUtils.verify(jwt.get())) {
+		
+		if (username.isEmpty()) {
+			log.error("jwt無userName jwt:[{}]",jwt.get());
 			return Mono.empty();
 		}
 		

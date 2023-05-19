@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +15,12 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.gatewarserver.config.auth.JwtAuthenticationManager;
 
 @Component
 public class AuthJwtUtils {
+	private static Logger log = LoggerFactory.getLogger(AuthJwtUtils.class);
+	
 	@Value("${jwt.key}")
 	private String key;
     private long EXPIRE_TIME = 5 * 60 * 1000;
@@ -41,7 +46,8 @@ public class AuthJwtUtils {
     		verifier.verify(token);
     	    return true;
     	} catch (JWTVerificationException e) {
-    	    return false;
+			log.error("verify exception", e);
+	   	    return false;
     	}
     }
 
@@ -50,6 +56,7 @@ public class AuthJwtUtils {
             DecodedJWT jwt = JWT.decode(token);
             return Optional.of(jwt.getSubject().toString());
         } catch (JWTDecodeException e) {
+        	log.error("getUsername exception", e);
             return Optional.empty();
         }
     }
