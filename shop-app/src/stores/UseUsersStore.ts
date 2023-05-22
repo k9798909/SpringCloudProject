@@ -1,21 +1,32 @@
 import { defineStore } from 'pinia'
-import type Users from '@/type/Users'
-import type LoginResDto from '@/type/dto/LoginResDto'
+import type Users from '@/type/stores/Users'
+import type LoginResDto from '@/type/http/dto/LoginResDto'
+import { clean } from '@/type/stores/Users'
 
-const useUsersStore = defineStore('users', {
+const useUsersStore = defineStore('usersStore', {
   state: () => {
-    return { users: null as Users | null }
+    let users: Users = {
+      name: '',
+      token: ''
+    }
+
+    if (localStorage.getItem('users')) {
+      const localUsers = JSON.parse(localStorage.getItem('users')!) as Users
+      users = { ...localUsers }
+    }
+    return { users }
   },
   getters: {
-    getName: (state) => state.users?.name,
-    getToken: (state) => state.users?.token,
-    isLogin: (state) => state.users && state.users?.name && state.users?.token
+    getUsers: (state) => state.users,
   },
   actions: {
     login(loginRes: LoginResDto) {
-      this.users = {
-        ...loginRes
-      }
+      this.users = { ...loginRes }
+      localStorage.setItem('users', JSON.stringify(this.users))
+    },
+    logout() {
+      clean(this.users);
+      localStorage.removeItem('users')
     }
   }
 })

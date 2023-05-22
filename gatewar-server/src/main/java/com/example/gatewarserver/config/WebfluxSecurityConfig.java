@@ -46,7 +46,7 @@ public class WebfluxSecurityConfig {
 	        .authenticationManager(jwtAuthenticationManager)
             .securityContextRepository(jwtSecurityContextRepository)
             .authorizeExchange()
-            .pathMatchers("/login").permitAll()
+            .pathMatchers("/login","/tokenVerify").permitAll()
             .pathMatchers(HttpMethod.GET,"/product-service/product","/product-service/product/*","/product-service/product/img/*").permitAll()
             .anyExchange().authenticated()
             .and()

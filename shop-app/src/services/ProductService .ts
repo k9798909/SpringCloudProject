@@ -1,6 +1,6 @@
-import type Product from '@/type/dto/ProductDto'
+import type Product from '@/type/http/dto/ProductDto'
 import getHttp from '@/http'
-import type ResponseData from '@/type/ResponseData'
+import type ResponseData from '@/type/http/ResponseData'
 
 class ProductService {
   getAll(): Promise<ResponseData<Product[]>> {
@@ -12,4 +12,5 @@ class ProductService {
   }
 }
 
-export default new ProductService()
+const productService = new ProductService()
+export default productService

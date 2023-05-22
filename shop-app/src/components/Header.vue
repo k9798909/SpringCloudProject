@@ -1,44 +1,27 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { onMounted, reactive } from 'vue'
+import { ViewMsg } from '@/data/MsgEnum'
 import usersService from '@/services/UsersService'
+import headerItems from '@/data/HeaderItems'
 
-interface Ilink {
-  name: string
-  href: string
+let isLogin: boolean = false
+let name: string = ''
+const state = reactive({ isLogin, name, headerItems })
+onMounted(init)
+
+async function init() {
+  try {
+    const isVerify = await usersService.verifyUsers()
+    state.isLogin = isVerify
+    state.name = usersService.getUsers().name
+  } catch (error) {
+    console.log('init header error:', error)
+    usersService.logout()
+    alert(ViewMsg.ServerError)
+  }
 }
 
-let linkArray: Ilink[] = [
-  {
-    name: 'Tour',
-    href: '#'
-  },
-  {
-    name: '商品',
-    href: '/product'
-  },
-  {
-    name: 'Features',
-    href: '#'
-  },
-  {
-    name: 'Enterprise',
-    href: '#'
-  },
-  {
-    name: 'Support',
-    href: '#'
-  },
-  {
-    name: 'Pricing',
-    href: '#'
-  }
-]
-
-let isLogin: boolean = usersService.isLogin()
-let name: string | null = usersService.getName()
-const state = reactive({ isLogin, name })
-
-const logoutEvent = () => {
+function logoutEvent() {
   usersService.logout()
   window.location.href = '/login'
 }
@@ -53,14 +36,14 @@ const logoutEvent = () => {
     </div>
     <nav>
       <div class="link-bar">
-        <a v-for="link in linkArray" :href="link.href">{{ link.name }}</a>
+        <a v-for="item in state.headerItems" :href="item.href">{{ item.name }}</a>
       </div>
     </nav>
     <div class="login-area" v-if="!state.isLogin">
       <a href="/login">登入</a>
     </div>
     <div class="login-area" v-if="state.isLogin">
-      {{state.name}} 你好! <span> </span><button v-on:click="logoutEvent">登出</button>
+      {{ state.name }} 你好！ <span> </span><button v-on:click="logoutEvent">登出</button>
     </div>
   </header>
 </template>

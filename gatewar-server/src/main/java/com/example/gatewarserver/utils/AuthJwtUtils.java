@@ -15,7 +15,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.gatewarserver.config.auth.JwtAuthenticationManager;
 
 @Component
 public class AuthJwtUtils {
@@ -23,7 +22,7 @@ public class AuthJwtUtils {
 	
 	@Value("${jwt.key}")
 	private String key;
-    private long EXPIRE_TIME = 5 * 60 * 1000;
+    private long EXPIRE_TIME = 1 * 60 * 1000;
     private String issuer = "gateway";
 
     public String generate(String username) {
@@ -46,7 +45,7 @@ public class AuthJwtUtils {
     		verifier.verify(token);
     	    return true;
     	} catch (JWTVerificationException e) {
-			log.error("verify exception", e);
+			log.debug("verify exception", e);
 	   	    return false;
     	}
     }
@@ -56,7 +55,7 @@ public class AuthJwtUtils {
             DecodedJWT jwt = JWT.decode(token);
             return Optional.of(jwt.getSubject().toString());
         } catch (JWTDecodeException e) {
-        	log.error("getUsername exception", e);
+        	log.debug("getUsername exception", e);
             return Optional.empty();
         }
     }

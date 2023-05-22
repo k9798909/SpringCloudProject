@@ -1,12 +1,13 @@
 import axios, { type AxiosInstance } from 'axios'
-import { ContentTypeEnum } from '../enums/HttpEnum'
+import { ContentTypeEnum } from '../data/HttpEnum'
+import usersService from '@/services/UsersService'
 
 const getApiClient = (options = {}): AxiosInstance => {
   return axios.create({
     baseURL: '/api',
     headers: {
       'Content-type': ContentTypeEnum.JSON,
-      Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+      Authorization: 'Bearer ' + usersService.getUsers().token,
       ...options
     }
   })

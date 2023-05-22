@@ -1,6 +1,3 @@
-/**
- * @description: Request
- */
 export enum RequestEnum {
   GET = 'GET',
   POST = 'POST',
@@ -9,9 +6,7 @@ export enum RequestEnum {
   DELETE = 'DELETE'
 }
 
-/**
- * @description: Content Type
- */
+
 export enum ContentTypeEnum {
   // json
   JSON = 'application/json',

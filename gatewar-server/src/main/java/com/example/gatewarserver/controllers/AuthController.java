@@ -39,11 +39,17 @@ public class AuthController {
 	}
 
 	@PostMapping("/getUsername")
-	public Mono<ResponseEntity<GetUsernameRes>> getUsername(@RequestBody GetUsernameReq req) {
+	public Mono<ResponseEntity<GetUsernameRes>> getUsername(@RequestBody TokenReq req) {
 		String username = authJwtUtils.getUsername(req.token)
 				.orElseThrow(() -> new RuntimeException("此 token 無法解析成username"));
 		GetUsernameRes res = new GetUsernameRes(username);
 		return Mono.just(ResponseEntity.ok(res));
+	}
+	
+	@PostMapping("/tokenVerify")
+	public Mono<ResponseEntity<Boolean>> tokenVerify(@RequestBody TokenReq req) {
+		ResponseEntity<Boolean> res = ResponseEntity.ok(authJwtUtils.verify(req.token));
+		return Mono.just(res);
 	}
 
 	@GetMapping("/hello")
@@ -57,7 +63,7 @@ public class AuthController {
 	public record LoginRes(String name, String token) {
 	}
 
-	public record GetUsernameReq(String token) {
+	public record TokenReq(String token) {
 	}
 
 	public record GetUsernameRes(String username) {

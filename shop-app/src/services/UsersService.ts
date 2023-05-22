@@ -1,28 +1,40 @@
-import type LoginDto from '@/type/dto/LoginDto'
-import type LoginResDto from '@/type/dto/LoginResDto'
+import type LoginDto from '@/type/http/dto/LoginDto'
+import type LoginResDto from '@/type/http/dto/LoginResDto'
+import type ResponseData from '@/type/http/ResponseData'
 import getHttp from '@/http'
-import type ResponseData from '@/type/ResponseData'
 import useUsersStore from '@/stores/UseUsersStore'
+import type Users from '@/type/stores/Users'
 
-const usersStore = useUsersStore();
-
-class UsersService {
-  async login(loginDto: LoginDto) {
+export class UsersService {
+  async login(loginDto: LoginDto): Promise<void> {
     let res: ResponseData<LoginResDto> = await getHttp().post('/login', loginDto)
-    usersStore.login(res.data);
+    useUsersStore().login(res.data)
   }
 
-  getName(): string | null {
-    return usersStore.getName()?''
+  getUsers(): Users {
+    return useUsersStore().getUsers
   }
 
-  isLogin(): boolean {
-    return !!sessionStorage.getItem('token')
+  async verifyUsers(): Promise<boolean> {
+    const token = useUsersStore().getUsers.token
+    if (!token) {
+      return false
+    }
+    
+    const res: ResponseData<boolean> = await getHttp().post('/tokenVerify', { token: token })
+    const isVerify = res.data
+
+    if (!isVerify) {
+      this.logout()
+    }
+
+    return isVerify
   }
 
-  logout() {
-    sessionStorage.removeItem('token')
+  logout(): void {
+    useUsersStore().logout()
   }
 }
 
-export default new UsersService()
+const usersService = new UsersService()
+export default usersService

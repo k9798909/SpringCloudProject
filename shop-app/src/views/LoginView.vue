@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import type LoginDto from '@/type/dto/LoginDto'
 import usersService from '@/services/UsersService'
 import { reactive } from 'vue'
-import { ViewMsg } from '@/enums/MsgEnum'
-import { NetworkErrorCode } from '@/enums/HttpEnum'
+import { ViewMsg } from '@/data/MsgEnum'
+import { NetworkErrorCode } from '@/data/HttpEnum'
 import type { AxiosError } from 'axios'
+import type LoginDto from '@/type/http/dto/LoginDto'
+import { ConstantKey } from '@/data/ConstantKey'
 
+let msg: string = sessionStorage.getItem(ConstantKey.LOGIN_SESSION_MSG) || ''
+sessionStorage.removeItem(ConstantKey.LOGIN_SESSION_MSG)
 let loginDto: LoginDto = {
   username: '',
   password: ''
 }
-const state = reactive({ loginDto, msg: '' })
+
+const state = reactive({ loginDto, msg })
 const loginEvent = async () => {
   try {
     state.msg = ''

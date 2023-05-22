@@ -1,25 +1,21 @@
 <script setup lang="ts">
 import Product from '../components/Product.vue'
 import { reactive, onMounted } from 'vue'
-import ProductService from '@/services/ProductService '
-import type ProductDto from '@/type/dto/ProductDto'
+import productService from '@/services/ProductService '
+import type ProductDto from '@/type/http/dto/ProductDto'
 
-interface State {
-  allProduct: ProductDto[]
-}
+const allProduct: ProductDto[] = []
+const state = reactive({ allProduct })
+onMounted(initProductList)
 
-const state: State = reactive({ allProduct: [] })
-
-const mountedAll = async () => {
+async function initProductList() {
   try {
-    state.allProduct = (await ProductService.getAll()).data
-    console.log(state.allProduct)
+    state.allProduct.push(...(await productService.getAll()).data)
+    state.allProduct.push(...(await productService.getAll()).data)
   } catch (e) {
     console.error('掛載所有商品時發生錯誤', e)
   }
 }
-
-onMounted(mountedAll)
 </script>
 
 <template>
@@ -33,7 +29,7 @@ onMounted(mountedAll)
 main {
   .product-list {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
   }
 }
 </style>

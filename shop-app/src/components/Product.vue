@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ProductDto from '@/type/dto/ProductDto'
+import type ProductDto from '@/type/http/dto/ProductDto'
 export interface Prop {
   product: ProductDto
 }
@@ -8,7 +8,7 @@ const imgUrl = `/api/product-service/product/img/${props.product.id}`
 </script>
 <template>
   <div class="card mb-4 shadow-sm product-card">
-    <img class="bd-placeholder-img card-img-top" width="100%" height="225" :src="imgUrl" />
+    <img class="bd-placeholder-img card-img-top" :src="imgUrl" />
     <div class="card-body">
       <div class="card-text">
         <p class="card-text-title">商品名稱：{{ props.product.name }}</p>
@@ -29,17 +29,28 @@ const imgUrl = `/api/product-service/product/img/${props.product.id}`
 </template>
 
 <style lang="scss" scoped>
+.card-img-top {
+  width: '100%';
+  height: 50%;
+}
+
+.card-body {
+  height: 50%;
+  padding: 0.5rem 0.5rem;
+}
+
 .product-card {
-  width: 16rem;
-  height: 25rem;
+  width: 12rem;
+  height: 20rem;
 }
 
 .card-text {
-  min-height: 70%;
+  min-height: 65%;
 }
 
 .card-text-title {
   font-weight: bold;
+  margin-bottom: 2px;
 }
 
 .card-text-content {
