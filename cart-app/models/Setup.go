@@ -11,8 +11,8 @@ var DB *redis.Client
 func ConnectDatabase() {
 	client := redis.NewClient(&redis.Options{
 		Addr:     "redis:6379",
-		Password: "", // no password set
-		DB:       0,  // use default DB
+		Password: "",
+		DB:       0,
 		PoolSize: 100,
 	})
 
@@ -25,35 +25,20 @@ func ConnectDatabase() {
 	DB = client
 }
 
-func InitData() {
-	const userid = "123456789"
-	cartProduct1 := CartProduct{
-		UserId:    userid,
-		ProductId: "999999999",
-		Quantity:  99,
-	}
-	cartProduct2 := CartProduct{
-		UserId:    userid,
-		ProductId: "888888888",
-		Quantity:  10,
-	}
-	DB.Del(userid)
-	SAddCartProduct(cartProduct1)
-	SAddCartProduct(cartProduct2)
-}
-
-func SAddCartProduct(cartProduct CartProduct) {
+func SAddCartProduct(cartProduct CartProduct) error {
 	json, err := json.Marshal(cartProduct)
 
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	_, resultErr := DB.HMSet(cartProduct.UserId, map[string]interface{}{
+	_, resultErr := DB.HMSet(cartProduct.Username, map[string]interface{}{
 		cartProduct.ProductId: string(json),
 	}).Result()
 
 	if resultErr != nil {
-		panic(resultErr)
+		return resultErr
 	}
+
+	return nil
 }

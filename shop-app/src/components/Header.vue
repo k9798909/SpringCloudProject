@@ -11,12 +11,10 @@ onMounted(init)
 
 async function init() {
   try {
-    const isVerify = await usersService.verifyUsers()
-    state.isLogin = isVerify
+    state.isLogin = await usersService.verifyStoreUsersToken()
     state.name = usersService.getUsers().name
   } catch (error) {
     console.log('init header error:', error)
-    usersService.logout()
     alert(ViewMsg.ServerError)
   }
 }
@@ -43,7 +41,10 @@ function logoutEvent() {
       <a href="/login">登入</a>
     </div>
     <div class="login-area" v-if="state.isLogin">
-      {{ state.name }} 你好！ <span> </span><button v-on:click="logoutEvent">登出</button>
+      <div>
+        <font-awesome-icon class="mx-1" :icon="['fas', 'user']" size="lg" /> {{ state.name }}
+      </div>
+      <div><button v-on:click="logoutEvent">登出</button></div>
     </div>
   </header>
 </template>
@@ -62,23 +63,21 @@ header {
   background-color: $bg-color;
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   backdrop-filter: saturate(180%) blur(20px);
-  padding: 0.5rem 3rem;
+  padding: 0.5rem 1.5rem;
 
-  nav a,
-  .login-area a {
+  nav a,.login-area a {
     color: $font-color;
     transition: ease-in-out color 0.15s;
     padding: 0.3rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
-  nav a:hover,
-  .login-area a:hover {
+  nav a:hover,.login-area a:hover {
     color: $hover-color;
   }
 
   .logo-area {
-    width: 15%;
+    width: 5%;
     .logo {
       display: block;
       width: 35px;
@@ -88,10 +87,10 @@ header {
   }
 
   .login-area {
-    width: 15%;
+    width: 25%;
     padding: 0.3rem;
     color: $font-color;
-    font-size: 1.2rem;
+    font-size: 1rem;
     display: flex;
     justify-content: flex-end;
     button {
@@ -105,9 +104,10 @@ header {
   }
 
   nav {
+    width: 70%;
     text-align: center;
     display: flex;
-    justify-content: flex-start;
+    justify-content: end;
     .link-bar {
       display: flex;
       justify-content: space-around;
@@ -117,5 +117,7 @@ header {
       padding: 0.3rem 2rem;
     }
   }
+
+  
 }
 </style>

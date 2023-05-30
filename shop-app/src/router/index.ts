@@ -36,13 +36,19 @@ const router = createRouter({
       name: 'usersInfo',
       component: () => import('../views/UserInfoView.vue'),
       beforeEnter: loginCheck
+    },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: () => import('../views/CartView.vue'),
+      beforeEnter: loginCheck
     }
   ]
 })
 
 router.beforeEach(tokenOverdue)
 
-//驗證token是否逾期
+//檢查token是否逾期，逾期會將token刪除
 async function tokenOverdue(to: RouteLocationNormalized, from: RouteLocationNormalized) {
   try {
     const token = usersService.getUsers().token
@@ -51,11 +57,12 @@ async function tokenOverdue(to: RouteLocationNormalized, from: RouteLocationNorm
       return
     }
 
-    const isVerify: boolean = await usersService.verifyUsers()
+    let isVerify = await usersService.verifyStoreUsersToken()
+
     if (!isVerify) {
-      sessionStorage.setItem(ConstantKey.LOGIN_SESSION_MSG, '登入逾期請重新登入')
-      return '/login'
+      usersService.logout()
     }
+
     return
   } catch (error) {
     console.error('tokenOverdue error', error)
@@ -70,16 +77,11 @@ async function loginCheck(to: RouteLocationNormalized, from: RouteLocationNormal
     const token = usersService.getUsers().token
 
     if (!token) {
-      sessionStorage.setItem(ConstantKey.LOGIN_SESSION_MSG, '請登入帳號')
+      sessionStorage.setItem(ConstantKey.LOGIN_SESSION_MSG, '未登入或登入逾期請重新登入')
       return '/login'
     }
 
-    const isVerify: boolean = await usersService.verifyUsers()
-    if (!isVerify) {
-      sessionStorage.setItem(ConstantKey.LOGIN_SESSION_MSG, '登入逾期請重新登入')
-      return '/login'
-    }
-    return 
+    return
   } catch (error) {
     console.error('loginCheck error', error)
     sessionStorage.setItem(ConstantKey.LOGIN_SESSION_MSG, '發生錯誤請重新登入')

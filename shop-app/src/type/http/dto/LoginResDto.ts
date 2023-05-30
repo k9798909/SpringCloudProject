@@ -1,4 +1,5 @@
 export default interface LoginResDto {
-  name: string,
+  username: string
+  name: string
   token: string
 }

@@ -22,7 +22,7 @@ public class AuthJwtUtils {
 	
 	@Value("${jwt.key}")
 	private String key;
-    private long EXPIRE_TIME = 1 * 60 * 1000;
+    private long EXPIRE_TIME = 60 * 60 * 1000;
     private String issuer = "gateway";
 
     public String generate(String username) {

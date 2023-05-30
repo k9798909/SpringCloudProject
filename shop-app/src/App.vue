@@ -12,6 +12,6 @@ import Footer from '@/components/Footer.vue'
 <style lang="scss" scoped>
 .main {
   min-height: 85vh;
-  padding: 2rem;
+  padding: 1rem;
 }
 </style>

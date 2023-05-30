@@ -10,15 +10,14 @@ import (
 )
 
 type CartDto struct {
-	UserId    string `json:"userid"`
-	ProductId string `json:"productid"`
+	Username  string `json:"username"`
+	ProductId string `json:"productId"`
 	Quantity  int    `json:"quantity"`
 }
 
-func FindByUserId(c *gin.Context) {
-	userid := c.Param("userid")
-
-	result, err := models.DB.HGetAll(userid).Result()
+func FindByUserName(c *gin.Context) {
+	userName := c.Param("userName")
+	result, err := models.DB.HGetAll(userName).Result()
 
 	if err != nil {
 		log.Panic(err)
@@ -32,12 +31,19 @@ func FindByUserId(c *gin.Context) {
 		dtoArray = append(dtoArray, dto)
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": dtoArray})
+	c.JSON(http.StatusOK, dtoArray)
 }
 
-func Update(c *gin.Context) {
+func Insert(c *gin.Context) {
 	dto := CartDto{}
 	c.ShouldBindJSON(&dto)
 	cartProduct := models.CartProduct(dto)
-	models.SAddCartProduct(cartProduct)
+	error := models.SAddCartProduct(cartProduct)
+
+	if error == nil {
+		c.JSON(http.StatusOK, nil)
+	} else {
+		log.Panic("新增時發生錯誤", error)
+		c.JSON(http.StatusInternalServerError, error)
+	}
 }

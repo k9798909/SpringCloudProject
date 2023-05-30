@@ -5,28 +5,31 @@ import { clean } from '@/type/stores/Users'
 
 const useUsersStore = defineStore('usersStore', {
   state: () => {
+    const storage: Storage = localStorage
     let users: Users = {
+      username: '',
       name: '',
       token: ''
     }
 
-    if (localStorage.getItem('users')) {
-      const localUsers = JSON.parse(localStorage.getItem('users')!) as Users
+    if (storage.getItem('users')) {
+      const localUsers = JSON.parse(storage.getItem('users')!) as Users
       users = { ...localUsers }
     }
-    return { users }
+    return { users, storage }
   },
   getters: {
-    getUsers: (state) => state.users,
+    getUsers: (state) => state.users
   },
   actions: {
     login(loginRes: LoginResDto) {
+      console.log(loginRes)
       this.users = { ...loginRes }
-      localStorage.setItem('users', JSON.stringify(this.users))
+      this.storage.setItem('users', JSON.stringify(this.users))
     },
     logout() {
-      clean(this.users);
-      localStorage.removeItem('users')
+      clean(this.users)
+      this.storage.removeItem('users')
     }
   }
 })

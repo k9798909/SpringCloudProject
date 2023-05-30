@@ -33,8 +33,10 @@ public class AuthController {
 		return userRepository.findByUsername(req.username)
 				.filter(userDetails -> passwordEncoder.matches(req.password(), userDetails.getPassword()))
 				.map(userDetails -> (Users) userDetails)
-				.map(users -> ResponseEntity
-						.ok(new LoginRes(users.getName(), authJwtUtils.generate(users.getUsername()))))
+				.map(users -> ResponseEntity.ok(new LoginRes(users.getUsername(), 
+															 users.getName(),
+															 authJwtUtils.generate(users.getUsername())))
+				)
 				.switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()));
 	}
 
@@ -45,7 +47,7 @@ public class AuthController {
 		GetUsernameRes res = new GetUsernameRes(username);
 		return Mono.just(ResponseEntity.ok(res));
 	}
-	
+
 	@PostMapping("/tokenVerify")
 	public Mono<ResponseEntity<Boolean>> tokenVerify(@RequestBody TokenReq req) {
 		ResponseEntity<Boolean> res = ResponseEntity.ok(authJwtUtils.verify(req.token));
@@ -60,7 +62,7 @@ public class AuthController {
 	public record LoginReq(String username, String password) {
 	}
 
-	public record LoginRes(String name, String token) {
+	public record LoginRes(String username, String name, String token) {
 	}
 
 	public record TokenReq(String token) {

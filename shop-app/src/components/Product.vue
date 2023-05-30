@@ -1,10 +1,20 @@
 <script setup lang="ts">
+import cartService from '@/services/CartService'
 import type ProductDto from '@/type/http/dto/ProductDto'
 export interface Prop {
   product: ProductDto
 }
 const props = defineProps<Prop>()
 const imgUrl = `/api/product-service/product/img/${props.product.id}`
+
+async function addCardProduct() {
+  try {
+    await cartService.updateCartProduct(props.product.id, 1)
+    alert('加入購物車成功')
+  } catch (e) {
+    console.error('addCardProduct error', e)
+  }
+}
 </script>
 <template>
   <div class="card mb-4 shadow-sm product-card">
@@ -19,7 +29,7 @@ const imgUrl = `/api/product-service/product/img/${props.product.id}`
       <div class="d-flex justify-content-between align-items-center">
         <div class="btn-group">
           <button type="button" class="btn btn-sm btn-success border border-light">明細</button>
-          <button type="button" class="btn btn-sm btn-success border border-light">
+          <button @click="addCardProduct" type="button" class="btn btn-sm btn-success border border-light">
             加入購物車
           </button>
         </div>

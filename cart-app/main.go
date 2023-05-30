@@ -16,9 +16,8 @@ func main() {
 	eurekaRegister.Register()
 	server := gin.Default()
 	models.ConnectDatabase()
-	models.InitData()
 	server.GET(serverPrefix, func(ctx *gin.Context) { ctx.JSON(http.StatusOK, gin.H{"msg": "cart-service working"}) })
-	server.GET(serverPrefix+"/cart/:userid", controllers.FindByUserId)
-	server.POST(serverPrefix+"/cart", controllers.Update)
+	server.GET(serverPrefix+"/cart/:userName", controllers.FindByUserName)
+	server.POST(serverPrefix+"/cart", controllers.Insert)
 	server.Run(":8088")
 }
