@@ -1,4 +1,20 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import cartService from '@/services/CartService'
+import { reactive, onMounted } from 'vue'
+import type CartProduct from '@/type/domain/CartProduct'
+
+let cart: CartProduct[] = []
+const state = reactive({ cart })
+onMounted(init)
+
+async function init() {
+  try {
+    state.cart.push(...(await cartService.getCartProductList()))
+  } catch (error) {
+    console.error('cartService getCartList error:', error)
+  }
+}
+</script>
 
 <template>
   <div class="cart w-75 mx-auto">
@@ -10,49 +26,25 @@
       </h5>
     </div>
 
-    <div class="cart-item d-flex justify-content-between">
+    <div v-for="dt in state.cart" class="cart-item d-flex justify-content-between">
       <div class="d-flex flex-row align-items-center">
         <div>
-          <img
-            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-            class="product-img"
-          />
+          <img class="product-img" :src="dt.imgUrl" />
         </div>
 
         <div class="ms-3">
-          <h5>Iphone 11 pro</h5>
-          <p class="mb-0">256GB, Navy Blue</p>
+          <h5></h5>
+          <p class="mb-0">{{ dt.productName }}</p>
         </div>
       </div>
 
       <div class="d-flex flex-row align-items-center">
-        <div class="qty">2</div>
-        <div class="price">$900</div>
+        <div class="qty">{{ dt.quantity }}</div>
+        <div class="price">{{ dt.price }}</div>
         <a href="#" style="color: #1e3054"><font-awesome-icon :icon="['fas', 'trash']" /></a>
       </div>
     </div>
 
-    <div class="cart-item d-flex justify-content-between">
-      <div class="d-flex flex-row align-items-center">
-        <div>
-          <img
-            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-            class="product-img"
-          />
-        </div>
-
-        <div class="ms-3">
-          <h5>Iphone 11 pro</h5>
-          <p class="mb-0">256GB, Navy Blue</p>
-        </div>
-      </div>
-
-      <div class="d-flex flex-row align-items-center">
-        <div class="qty">2</div>
-        <div class="price">$900</div>
-        <a href="#" style="color: #1e3054"><font-awesome-icon :icon="['fas', 'trash']" /></a>
-      </div>
-    </div>
     <div class="cart-footer">
       <h5>
         <a href="#" class="text-body">結帳 <font-awesome-icon :icon="['fas', 'arrow-right']" /></a>
@@ -75,7 +67,8 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.175);
   }
 
-  .qty,.price {
+  .qty,
+  .price {
     font-size: 1.5rem;
     margin-right: 3rem;
   }
