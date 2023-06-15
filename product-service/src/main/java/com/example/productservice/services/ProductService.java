@@ -17,15 +17,19 @@ import com.example.productservice.repository.ProductRepository;
 public class ProductService {
 	private ProductRepository productRepository;
 	private ProductImageRepository productImageRepository;
-	
-	public ProductService(ProductRepository productRepository, 
-			              ProductImageRepository productImageRepository) {
+
+	public ProductService(ProductRepository productRepository, ProductImageRepository productImageRepository) {
 		this.productRepository = productRepository;
 		this.productImageRepository = productImageRepository;
 	}
 
 	public List<ProductDto> findAll() {
 		return productRepository.findAll().stream().map(conver()).toList();
+	}
+
+	public ProductDto findByProId(String proId) {
+		return productRepository.findById(proId).stream().map(conver()).findAny()
+				.orElseThrow(() -> new NullPointerException("查無對應商品"));
 	}
 
 	public byte[] findImgByProId(String proId) {
@@ -37,10 +41,7 @@ public class ProductService {
 	}
 
 	private Function<Product, ProductDto> conver() {
-		return product -> new ProductDto(product.getId(), 
-										 product.getName(), 
-										 product.getDescription(),
-										 product.getPrice(), 
-										 product.getQuantity());
+		return product -> new ProductDto(product.getId(), product.getName(), product.getDescription(),
+				product.getPrice(), product.getQuantity());
 	}
 }

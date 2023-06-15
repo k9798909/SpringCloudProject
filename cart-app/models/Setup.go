@@ -42,3 +42,7 @@ func SAddCartProduct(cartProduct CartProduct) error {
 
 	return nil
 }
+
+func HDelCartProduct(username string, productId string) {
+	DB.HDel(username, productId)
+}

@@ -28,6 +28,11 @@ public class ProductController {
 		return ResponseEntity.ok(productService.findAll());
 	}
 
+	@GetMapping("/{proId}")
+	public ResponseEntity<ProductDto> findBy(@PathVariable("proId") String proId) {
+		return new ResponseEntity<>(productService.findByProId(proId), HttpStatus.OK);
+	}
+
 	@GetMapping("/img/{proId}")
 	public ResponseEntity<byte[]> getAll(@PathVariable("proId") String proId) {
 		byte[] img = productService.findImgByProId(proId);

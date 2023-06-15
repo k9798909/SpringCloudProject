@@ -14,6 +14,15 @@ async function init() {
     console.error('cartService getCartList error:', error)
   }
 }
+
+async function deleteCartProduct(e: MouseEvent, productId: string) {
+  try {
+    await cartService.deleteCartProduct(productId)
+    state.cart = state.cart.filter((t) => t.productId != productId)
+  } catch (error) {
+    console.error('cartService deleteCartProduct error:', error)
+  }
+}
 </script>
 
 <template>
@@ -33,15 +42,17 @@ async function init() {
         </div>
 
         <div class="ms-3">
-          <h5></h5>
-          <p class="mb-0">{{ dt.productName }}</p>
+          <h5>{{ dt.productName }}</h5>
+          <p class="mb-0">產品介紹</p>
         </div>
       </div>
 
       <div class="d-flex flex-row align-items-center">
         <div class="qty">{{ dt.quantity }}</div>
         <div class="price">{{ dt.price }}</div>
-        <a href="#" style="color: #1e3054"><font-awesome-icon :icon="['fas', 'trash']" /></a>
+        <button class="trashBtn" @click="deleteCartProduct($event, dt.productId)">
+          <font-awesome-icon :icon="['fas', 'trash']" />
+        </button>
       </div>
     </div>
 
@@ -76,8 +87,8 @@ async function init() {
   .product-img {
     border-radius: 0.5rem;
     max-width: 100%;
-    height: auto;
-    width: 65px;
+    height: 70px;
+    width: 70px;
   }
 
   .cart-item {
@@ -88,6 +99,14 @@ async function init() {
   .cart-footer {
     padding-top: 1rem;
     text-align: right;
+  }
+
+  .trashBtn {
+    background-color: transparent;
+    border: none;
+    color: #1e3054;
+    text-decoration: none;
+    cursor: pointer;
   }
 }
 </style>

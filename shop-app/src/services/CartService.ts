@@ -10,9 +10,8 @@ class CartService {
     let cartDto: CartDto[] = (
       await getApiClient().get('/cart-service/cart/' + usersService.getUsers().username)
     ).data
-
     let cartProduct: CartProduct[] = []
-    cartDto.forEach(async (dto) => {
+    for (let dto of cartDto) {
       let product: ProductDto = (await productService.get(dto.productId)).data
       cartProduct.push({
         productId: dto.productId,
@@ -21,7 +20,7 @@ class CartService {
         quantity: 1,
         imgUrl: `/api/product-service/product/img/${dto.productId}`
       })
-    })
+    }
     return cartProduct
   }
 
@@ -29,7 +28,7 @@ class CartService {
     let cart: CartDto[] = (
       await getApiClient().get('/cart-service/cart/' + usersService.getUsers().username)
     ).data
-    console.log(cart)
+
     let updCart: CartDto | undefined = cart.find((t) => t.productId == productId)
 
     if (updCart) {
@@ -43,6 +42,12 @@ class CartService {
     }
 
     await getApiClient().post('/cart-service/cart', updCart)
+  }
+
+  async deleteCartProduct(productId: String) {
+    await getApiClient().delete(
+      `/cart-service/cart/${usersService.getUsers().username}/${productId}`
+    )
   }
 }
 

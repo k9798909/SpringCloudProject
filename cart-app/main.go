@@ -19,5 +19,6 @@ func main() {
 	server.GET(serverPrefix, func(ctx *gin.Context) { ctx.JSON(http.StatusOK, gin.H{"msg": "cart-service working"}) })
 	server.GET(serverPrefix+"/cart/:userName", controllers.FindByUserName)
 	server.POST(serverPrefix+"/cart", controllers.Insert)
+	server.DELETE(serverPrefix+"/cart/:username/:productId", controllers.Delete)
 	server.Run(":8088")
 }

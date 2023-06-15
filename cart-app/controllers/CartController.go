@@ -47,3 +47,9 @@ func Insert(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, error)
 	}
 }
+
+func Delete(c *gin.Context) {
+	username := c.Param("username")
+	productId := c.Param("productId")
+	models.HDelCartProduct(username, productId)
+}
