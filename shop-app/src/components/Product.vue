@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import cartService from '@/services/CartService'
-import type ProductDto from '@/type/http/dto/ProductDto'
+import type ProductDto from '@/type/dto/ProductDto'
 export interface Prop {
   product: ProductDto
 }

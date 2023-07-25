@@ -1,4 +1,4 @@
-import type Product from '@/type/http/dto/ProductDto'
+import type Product from '@/type/dto/ProductDto'
 import getHttp from '@/http'
 import type ResponseData from '@/type/http/ResponseData'
 

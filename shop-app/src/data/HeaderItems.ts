@@ -1,9 +1,9 @@
-import type HeaderItem from '@/type/domain/HeaderItem'
+import type HeaderItem from '@/type/dto/HeaderItemDto'
 
 const headerItems: HeaderItem[] = [
   {
     name: '個人資料',
-    href: '/usersInfo'
+    href: '/users'
   },
   {
     name: '商品',

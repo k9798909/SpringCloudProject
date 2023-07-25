@@ -39,6 +39,8 @@ function logoutEvent() {
     </nav>
     <div class="login-area" v-if="!state.isLogin">
       <a href="/login">登入</a>
+      <span>|</span>
+      <a href="/addUser">註冊</a>
     </div>
     <div class="login-area" v-if="state.isLogin">
       <div>
@@ -65,14 +67,21 @@ header {
   backdrop-filter: saturate(180%) blur(20px);
   padding: 0.5rem 1.5rem;
 
-  nav a,.login-area a {
+  nav a,
+  .login-area a {
     color: $font-color;
     transition: ease-in-out color 0.15s;
     padding: 0.3rem;
     font-size: 1rem;
   }
 
-  nav a:hover,.login-area a:hover {
+  .login-area span {
+    padding-top: 0.2rem;
+    font-size: 1rem;
+  }
+
+  nav a:hover,
+  .login-area a:hover {
     color: $hover-color;
   }
 
@@ -117,7 +126,5 @@ header {
       padding: 0.3rem 2rem;
     }
   }
-
-  
 }
 </style>

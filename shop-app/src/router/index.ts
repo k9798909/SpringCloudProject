@@ -17,11 +17,6 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue')
-    },
-    {
       path: '/product',
       name: 'product',
       component: () => import('../views/ProductView.vue')
@@ -32,10 +27,15 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue')
     },
     {
-      path: '/usersInfo',
-      name: 'usersInfo',
-      component: () => import('../views/UserInfoView.vue'),
+      path: '/users',
+      name: 'users',
+      component: () => import('../views/UsersView.vue'),
       beforeEnter: loginCheck
+    },
+    {
+      path: '/addUser',
+      name: 'addUser',
+      component: () => import('../views/UsersView.vue')
     },
     {
       path: '/cart',
@@ -48,7 +48,7 @@ const router = createRouter({
 
 router.beforeEach(tokenOverdue)
 
-//檢查token是否逾期，逾期會將token刪除
+//單純檢查token是否預期如果預期會將token刪除。
 async function tokenOverdue(to: RouteLocationNormalized, from: RouteLocationNormalized) {
   try {
     const token = usersService.getUsers().token
@@ -77,7 +77,7 @@ async function loginCheck(to: RouteLocationNormalized, from: RouteLocationNormal
     const token = usersService.getUsers().token
 
     if (!token) {
-      sessionStorage.setItem(ConstantKey.LOGIN_SESSION_MSG, '未登入或登入逾期請重新登入')
+      sessionStorage.setItem(ConstantKey.LOGIN_SESSION_MSG, '請登入使用者帳號')
       return '/login'
     }
 

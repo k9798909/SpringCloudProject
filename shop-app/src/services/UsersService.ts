@@ -1,5 +1,5 @@
-import type LoginDto from '@/type/http/dto/LoginDto'
-import type LoginResDto from '@/type/http/dto/LoginResDto'
+import type LoginDto from '@/type/form/LoginForm'
+import type LoginResDto from '@/type/dto/LoginResDto'
 import type ResponseData from '@/type/http/ResponseData'
 import getHttp from '@/http'
 import useUsersStore from '@/stores/UseUsersStore'

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type Users from '@/type/stores/Users'
-import type LoginResDto from '@/type/http/dto/LoginResDto'
+import type LoginResDto from '@/type/dto/LoginResDto'
 import { clean } from '@/type/stores/Users'
 
 const useUsersStore = defineStore('usersStore', {

@@ -4,25 +4,25 @@ import { reactive } from 'vue'
 import { ViewMsg } from '@/data/MsgEnum'
 import { NetworkErrorCode } from '@/data/HttpEnum'
 import type { AxiosError } from 'axios'
-import type LoginDto from '@/type/http/dto/LoginDto'
 import { ConstantKey } from '@/data/ConstantKey'
+import type LoginForm from '@/type/form/LoginForm'
 
 let msg: string = sessionStorage.getItem(ConstantKey.LOGIN_SESSION_MSG) || ''
 sessionStorage.removeItem(ConstantKey.LOGIN_SESSION_MSG)
-let loginDto: LoginDto = {
+let loginForm: LoginForm = {
   username: '',
   password: ''
 }
 
-const state = reactive({ loginDto, msg })
+const state = reactive({ loginForm, msg })
 const loginEvent = async () => {
   try {
     state.msg = ''
-    if (!(state.loginDto.username && state.loginDto.password)) {
+    if (!(state.loginForm.username && state.loginForm.password)) {
       state.msg = '請輸入帳號及密碼!'
       return
     }
-    await usersService.login(state.loginDto)
+    await usersService.login(state.loginForm)
     window.location.href = '/index'
   } catch (error) {
     let axiosError: AxiosError = error as AxiosError
@@ -49,7 +49,7 @@ const loginEvent = async () => {
                 name="username"
                 class="form-control"
                 placeholder="帳號"
-                v-model="state.loginDto.username"
+                v-model="state.loginForm.username"
                 required="true"
               />
               <label for="floatingInput">帳號</label>
@@ -62,7 +62,7 @@ const loginEvent = async () => {
                 class="form-control"
                 placeholder="密碼"
                 required="true"
-                v-model="state.loginDto.password"
+                v-model="state.loginForm.password"
               />
               <label for="floatingPassword">密碼</label>
             </div>

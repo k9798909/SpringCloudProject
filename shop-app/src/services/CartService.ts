@@ -1,15 +1,19 @@
 import getApiClient from '@/http'
 import usersService from './UsersService'
-import type { CartDto } from '@/type/http/dto/CartDto'
+import type { CartDto } from '@/type/dto/CartDto'
 import productService from './ProductService'
-import type CartProduct from '@/type/domain/CartProduct'
-import type ProductDto from '@/type/http/dto/ProductDto'
+import type CartProduct from '@/type/dto/CartProductDto'
+import type ProductDto from '@/type/dto/ProductDto'
+import type ResponseData from '@/type/http/ResponseData'
 
 class CartService {
   async getCartProductList(): Promise<CartProduct[]> {
-    let cartDto: CartDto[] = (
-      await getApiClient().get('/cart-service/cart/' + usersService.getUsers().username)
-    ).data
+    let res: ResponseData<CartDto[]> = await getApiClient().get(
+      `/cart-service/cart/${usersService.getUsers().username}`
+    )
+
+    let cartDto: CartDto[] = res.data
+
     let cartProduct: CartProduct[] = []
     for (let dto of cartDto) {
       let product: ProductDto = (await productService.get(dto.productId)).data
