@@ -28,7 +28,10 @@ public class ProductService {
 	}
 
 	public ProductDto findByProId(String proId) {
-		return productRepository.findById(proId).stream().map(conver()).findAny()
+		return productRepository.findById(proId)
+				.stream()
+				.map(conver())
+				.findAny()
 				.orElseThrow(() -> new NullPointerException("查無對應商品"));
 	}
 
@@ -41,7 +44,12 @@ public class ProductService {
 	}
 
 	private Function<Product, ProductDto> conver() {
-		return product -> new ProductDto(product.getId(), product.getName(), product.getDescription(),
-				product.getPrice(), product.getQuantity());
+		return product -> new ProductDto(
+				product.getId(), 
+				product.getName(), 
+				product.getDescription(),
+				product.getPrice(), 
+				product.getQuantity()
+		);
 	}
 }

@@ -7,7 +7,7 @@ const getApiClient = (options = {}): AxiosInstance => {
     baseURL: '/api',
     headers: {
       'Content-type': ContentTypeEnum.JSON,
-      Authorization: 'Bearer ' + usersService.getUsers().token,
+      Authorization: 'Bearer ' + usersService.getUsers()?.token || '',
       ...options
     }
   })

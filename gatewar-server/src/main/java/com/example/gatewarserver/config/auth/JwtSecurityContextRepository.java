@@ -37,7 +37,10 @@ public class JwtSecurityContextRepository implements ServerSecurityContextReposi
 
 	@Override
 	public Mono<SecurityContext> load(ServerWebExchange exchange) {
-        Optional<String> token = Optional.fromNullable(exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION));
+        Optional<String> token = Optional.fromNullable(
+				exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION)
+        );
+        
         if (!token.isPresent()) {
         	return Mono.empty();
         }
@@ -48,12 +51,13 @@ public class JwtSecurityContextRepository implements ServerSecurityContextReposi
         
         String jwt = token.get().substring(7);
         
-        if (jwtUtils.verify(jwt)) {
-        	//第一個參數通過的jwt會再給JwtAuthenticationManager驗證，第二個jwt因token驗證無密碼故將jwt傳入
-            Authentication auth = new UsernamePasswordAuthenticationToken(jwt, jwt);
-            return jwtAuthenticationManager.authenticate(auth).map(SecurityContextImpl::new);
+        if (!jwtUtils.verify(jwt)) {
+        	return Mono.empty();
         }
-        return Mono.empty();
+        
+    	//第一個參數通過的jwt會再給JwtAuthenticationManager驗證，第二個jwt因token驗證無密碼故將jwt傳入
+        Authentication auth = new UsernamePasswordAuthenticationToken(jwt, jwt);
+        return jwtAuthenticationManager.authenticate(auth).map(SecurityContextImpl::new);
 	}
 
 }

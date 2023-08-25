@@ -6,6 +6,7 @@ import { NetworkErrorCode } from '@/data/HttpEnum'
 import type { AxiosError } from 'axios'
 import { ConstantKey } from '@/data/ConstantKey'
 import type LoginForm from '@/type/form/LoginForm'
+import { useRouter } from 'vue-router'
 
 let msg: string = sessionStorage.getItem(ConstantKey.LOGIN_SESSION_MSG) || ''
 sessionStorage.removeItem(ConstantKey.LOGIN_SESSION_MSG)
@@ -14,6 +15,7 @@ let loginForm: LoginForm = {
   password: ''
 }
 
+const router = useRouter();
 const state = reactive({ loginForm, msg })
 const loginEvent = async () => {
   try {
@@ -23,7 +25,7 @@ const loginEvent = async () => {
       return
     }
     await usersService.login(state.loginForm)
-    window.location.href = '/index'
+    router.push('/index')
   } catch (error) {
     let axiosError: AxiosError = error as AxiosError
     if (NetworkErrorCode.Unauthorized == axiosError.response?.status) {

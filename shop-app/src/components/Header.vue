@@ -1,18 +1,36 @@
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue'
+import { onMounted, reactive, watch } from 'vue'
 import { ViewMsg } from '@/data/MsgEnum'
 import usersService from '@/services/UsersService'
 import headerItems from '@/data/HeaderItems'
+import type Users from '@/type/stores/Users'
+import router from '@/router'
+import useUsersStore from '@/stores/UseUsersStore'
 
 let isLogin: boolean = false
 let name: string = ''
-const state = reactive({ isLogin, name, headerItems })
+const state = reactive({ isLogin, name, headerItems, useUsersStore })
 onMounted(init)
+
+const userStore = useUsersStore()
+watch(
+  () => userStore.users,
+  () => {
+    console.log('isLoggedIn ref changed, do something!')
+    init()
+  }
+)
 
 async function init() {
   try {
-    state.isLogin = await usersService.verifyStoreUsersToken()
-    state.name = usersService.getUsers().name
+    let users: Users | null = usersService.getUsers()
+    if (users) {
+      state.name = users!.name
+      state.isLogin = true
+    } else {
+      state.isLogin = false
+      state.name = ''
+    }
   } catch (error) {
     console.log('init header error:', error)
     alert(ViewMsg.ServerError)
@@ -21,7 +39,7 @@ async function init() {
 
 function logoutEvent() {
   usersService.logout()
-  window.location.href = '/login'
+  router.push('/login')
 }
 </script>
 
@@ -34,13 +52,13 @@ function logoutEvent() {
     </div>
     <nav>
       <div class="link-bar">
-        <a v-for="item in state.headerItems" :href="item.href">{{ item.name }}</a>
+        <router-link v-for="item in state.headerItems" :to="item.href">{{ item.name }}</router-link>
       </div>
     </nav>
     <div class="login-area" v-if="!state.isLogin">
-      <a href="/login">登入</a>
+      <router-link to="/login">登入</router-link>
       <span>|</span>
-      <a href="/addUser">註冊</a>
+      <router-link to="/addUser">註冊</router-link>
     </div>
     <div class="login-area" v-if="state.isLogin">
       <div>

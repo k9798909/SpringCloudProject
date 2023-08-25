@@ -11,20 +11,14 @@ export class UsersService {
     useUsersStore().login(res.data)
   }
 
-  getUsers(): Users {
+  getUsers(): Users | null {
     return useUsersStore().getUsers
   }
 
-  //檢查store裡的user，token是否還生效，若已過期會刪除
-  async verifyStoreUsersToken(): Promise<boolean> {
-    const token = useUsersStore().getUsers.token
-    if (!token) {
-      return false
-    }
-    
+  //檢查token是否過期。
+  async verifyToken(token:string): Promise<boolean> {
     const res: ResponseData<boolean> = await getHttp().post('/tokenVerify', { token: token })
-    const isVerify = res.data
-    return isVerify
+    return res.data
   }
 
   logout(): void {
