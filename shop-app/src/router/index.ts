@@ -59,7 +59,7 @@ async function loginCheck(to: RouteLocationNormalized, from: RouteLocationNormal
       return
     }
 
-    const token = usersService.getUsers().token
+    const token = usersService.getUsers()?.token
 
     //檢查是否登入
     if (!token) {

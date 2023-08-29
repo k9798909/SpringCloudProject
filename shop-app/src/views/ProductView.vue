@@ -2,7 +2,7 @@
 import Product from '../components/Product.vue'
 import { reactive, onMounted, watch } from 'vue'
 import productService from '@/services/ProductService'
-import type ProductDto from '@/type/http/dto/ProductDto'
+import type ProductDto from '@/type/dto/ProductDto'
 
 const allProduct: ProductDto[] = []
 const products: ProductDto[] = []
@@ -32,80 +32,48 @@ async function initProductList() {
 function searchEvent(e: MouseEvent) {
   state.products = allProduct.filter((t) => t.name.includes(state.searchInput))
 }
-
 </script>
 
 <template>
   <main>
-    <form class="my-2">
-      <div class="btn-group d-flex justify-content-center align-items-center">
-        <div class="d-flex" role="search">
-          <input
-            v-model="state.searchInput"
-            class="form-control form-control-sm me-2"
-            type="search"
-            placeholder="輸入商品名稱"
-            aria-label="Search"
-            size="40"
-          />
-          <button @click="(e) => searchEvent(e)" class="btn btn-sm btn-success" type="button">
-            Search
-          </button>
-        </div>
-        <a href="/cart" class="text-body cart-link mx-3"
-          ><font-awesome-icon :icon="['fas', 'shopping-cart']" /> 購物車
-        </a>
-      </div>
+    <div class="mx-auto w-50 d-flex">
+      <v-text-field
+        density="compact"
+        variant="solo"
+        label="搜尋要找的商品"
+        append-inner-icon="mdi-magnify"
+        single-line
+        hide-details
+        v-model="state.searchInput"
+        @click:append-inner="(e: MouseEvent) => searchEvent(e)"
+      ></v-text-field>
 
-      <div class="d-flex w-100 py-2 px-3 align-items-end justify-content-end">
-        篩選：
-        <select class="form-select form-select-sm mx-2" aria-label="排序條件">
-          <option selected>排序條件</option>
-          <option value="1">價格</option>
-        </select>
-        <select class="form-select form-select-sm" aria-label="排序">
-          <option selected>順序</option>
-          <option value="1">由低到高</option>
-          <option value="2">由高到低</option>
-        </select>
-      </div>
-    </form>
-    <div v-if="!state.searchResult" class="d-flex justify-content-center w-100 pt-1">
-      <div class="alert alert-danger p-2" role="alert">
-        <p class="mb-0">
-          <font-awesome-icon :icon="['fas', 'file-excel']" size="lg" />
-          找不到結果，嘗試不同或更常見的關鍵字。
-        </p>
-      </div>
+      <router-link to="/cart" custom v-slot="{ navigate }"
+        ><v-btn class="mx-2 my-auto" @click="navigate">購物車</v-btn></router-link
+      >
     </div>
-    <div v-if="state.products.length != 0" class="product-list">
-      <Product :product="product" v-for="product in state.products"></Product>
-    </div>
+
+    <v-parallax
+      src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
+      class="my-3 mx-auto"
+      max-height="200px"
+      width="80%"
+    >
+      <div class="d-flex flex-column fill-height justify-center align-center text-white">
+        <h1 class="text-h4 font-weight-thin mb-4">Vuetify</h1>
+        <h4 class="subheading">Build your application today!</h4>
+      </div>
+    </v-parallax>
+
+    <v-container v-if="state.products.length != 0" min-width="500px">
+      <v-row>
+        <v-col cols="12" lg="3" md="4" sm="6" v-for="product in state.products">
+          <Product class="mx-auto" :product="product"></Product>
+        </v-col>
+      </v-row>
+      <v-pagination :length="1"></v-pagination>
+    </v-container>
+    
   </main>
 </template>
-<style lang="scss" scoped>
-main {
-  .product-list {
-    display: grid;
-    grid-column-gap: 15px;
-    grid-template-columns: repeat(auto-fill, 12rem);
-    justify-content: space-between;
-  }
-
-  .cart-link {
-    color: rgba(33, 37, 41), 1 !important;
-  }
-
-  select {
-    width: 150px;
-  }
-}
-
-@media (max-width: 900px) {
-  main {
-    .product-list {
-      justify-content: center;
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

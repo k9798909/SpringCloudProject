@@ -1,107 +1,103 @@
 <script setup lang="ts">
 import usersService from '@/services/UsersService'
-import { reactive } from 'vue'
+import { reactive, ref, type Ref } from 'vue'
 import { ViewMsg } from '@/data/MsgEnum'
 import { NetworkErrorCode } from '@/data/HttpEnum'
 import type { AxiosError } from 'axios'
 import { ConstantKey } from '@/data/ConstantKey'
 import type LoginForm from '@/type/form/LoginForm'
-import { useRouter } from 'vue-router'
+import { useRouter, type Router } from 'vue-router'
 
-let msg: string = sessionStorage.getItem(ConstantKey.LOGIN_SESSION_MSG) || ''
+//session訊息用完移除
+let msg: Ref<string> = ref(sessionStorage.getItem(ConstantKey.LOGIN_SESSION_MSG) || '')
 sessionStorage.removeItem(ConstantKey.LOGIN_SESSION_MSG)
+
+//密碼能見
+let visible: Ref<boolean> = ref(false)
+
 let loginForm: LoginForm = {
   username: '',
   password: ''
 }
+const state = reactive({ loginForm })
 
-const router = useRouter();
-const state = reactive({ loginForm, msg })
+const router:Router = useRouter()
+
 const loginEvent = async () => {
-  try {
-    state.msg = ''
-    if (!(state.loginForm.username && state.loginForm.password)) {
-      state.msg = '請輸入帳號及密碼!'
-      return
-    }
-    await usersService.login(state.loginForm)
-    router.push('/index')
-  } catch (error) {
-    let axiosError: AxiosError = error as AxiosError
-    if (NetworkErrorCode.Unauthorized == axiosError.response?.status) {
-      state.msg = ViewMsg.InvalidUsernameOrPassword
-      return
-    }
-    console.error('login error:', error)
-    state.msg = ViewMsg.ServerError
+  msg.value = ''
+
+  if (!(state.loginForm.username && state.loginForm.password)) {
+    msg.value = '請輸入帳號及密碼'
+    return
   }
+
+  usersService.login(state.loginForm)
+    .then(() => {
+      router.push('/index')
+    })
+    .catch((e) => {
+      let axiosError: AxiosError = e as AxiosError
+      if (NetworkErrorCode.Unauthorized == axiosError.response?.status) {
+        msg.value = ViewMsg.InvalidUsernameOrPassword
+        return
+      }
+      
+      console.error('login error:', e)
+      msg.value = ViewMsg.ServerError
+    })
+
 }
 </script>
 
 <template>
-  <main class="main">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-3 form-signin">
-          <form>
-            <h1 class="h3 mb-3 fw-normal">使用者登入</h1>
-            <div class="form-floating">
-              <input
-                id="floatingInput"
-                name="username"
-                class="form-control"
-                placeholder="帳號"
-                v-model="state.loginForm.username"
-                required="true"
-              />
-              <label for="floatingInput">帳號</label>
-            </div>
-            <div class="form-floating">
-              <input
-                id="floatingPassword"
-                name="password"
-                type="password"
-                class="form-control"
-                placeholder="密碼"
-                required="true"
-                v-model="state.loginForm.password"
-              />
-              <label for="floatingPassword">密碼</label>
-            </div>
-            <div v-if="state.msg" class="alert alert-danger" role="alert">{{ state.msg }}</div>
-            <button type="button" class="w-100 btn btn-lg btn-success" @click="loginEvent">
-              登入
-            </button>
-          </form>
-        </div>
+  <div>
+    <v-img
+      class="mx-auto my-6"
+      max-width="228"
+      src="https://cdn.vuetifyjs.com/docs/images/logos/vuetify-logo-v3-slim-text-light.svg"
+    ></v-img>
+
+    <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg">
+      <div class="text-subtitle-1 text-medium-emphasis">使用者名稱</div>
+
+      <v-text-field
+        density="compact"
+        placeholder="輸入使用者名稱"
+        prepend-inner-icon="mdi-email-outline"
+        variant="outlined"
+        v-model="state.loginForm.username"
+      ></v-text-field>
+
+      <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
+        密碼
+
+        <!-- <a
+          class="text-caption text-decoration-none text-blue"
+          href="#"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Forgot login password?</a
+        > -->
       </div>
-    </div>
-  </main>
+
+      <v-text-field
+        :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+        :type="visible ? 'text' : 'password'"
+        density="compact"
+        placeholder="輸入密碼"
+        prepend-inner-icon="mdi-lock-outline"
+        variant="outlined"
+        v-model="state.loginForm.password"
+        @click:append-inner="visible = !visible"
+      ></v-text-field>
+      <v-alert class="mb-5" v-if="msg" density="compact" type="error" variant="tonal">{{
+        msg
+      }}</v-alert>
+      <v-btn block class="mb-5" color="indigo" size="large" variant="elevated" @click="loginEvent"
+        >登入</v-btn
+      >
+    </v-card>
+  </div>
 </template>
-<style lang="scss" scoped>
-.form-signin {
-  max-width: 330px;
-  padding: 15px;
-
-  .form-floating:focus-within {
-    z-index: 2;
-  }
-
-  input[name='username'] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-
-  input[name='password'] {
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-
-  .alert-danger {
-    font-size: 1em;
-    padding: 10px;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

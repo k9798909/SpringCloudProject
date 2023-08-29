@@ -8,7 +8,13 @@ import type Users from '@/type/stores/Users'
 export class UsersService {
   async login(loginDto: LoginDto): Promise<void> {
     let res: ResponseData<LoginResDto> = await getHttp().post('/login', loginDto)
-    useUsersStore().login(res.data)
+    if (res.data) {
+      useUsersStore().login(res.data)
+    }
+  }
+
+  logout(): void {
+    useUsersStore().logout()
   }
 
   getUsers(): Users | null {
@@ -16,13 +22,9 @@ export class UsersService {
   }
 
   //檢查token是否過期。
-  async verifyToken(token:string): Promise<boolean> {
+  async verifyToken(token: string): Promise<boolean> {
     const res: ResponseData<boolean> = await getHttp().post('/tokenVerify', { token: token })
     return res.data
-  }
-
-  logout(): void {
-    useUsersStore().logout()
   }
 }
 

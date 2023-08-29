@@ -4,15 +4,17 @@ import type { CartDto } from '@/type/dto/CartDto'
 import productService from './ProductService'
 import type CartProduct from '@/type/dto/CartProductDto'
 import type ProductDto from '@/type/dto/ProductDto'
-import type ResponseData from '@/type/http/ResponseData'
+import NotLoginError from '@/data/NotLoginError'
 
 class CartService {
   async getCartProductList(): Promise<CartProduct[]> {
-    let res: ResponseData<CartDto[]> = await getApiClient().get(
-      `/cart-service/cart/${usersService.getUsers().username}`
-    )
+    const users = usersService.getUsers()
 
-    let cartDto: CartDto[] = res.data
+    if (!users) {
+      throw new NotLoginError('未登入')
+    }
+
+    let cartDto: CartDto[] = (await getApiClient().get(`/cart-service/cart/${users.username}`)).data
 
     let cartProduct: CartProduct[] = []
     for (let dto of cartDto) {
@@ -29,9 +31,13 @@ class CartService {
   }
 
   async updateCartProduct(productId: string, quantity: number): Promise<void> {
-    let cart: CartDto[] = (
-      await getApiClient().get('/cart-service/cart/' + usersService.getUsers().username)
-    ).data
+    const users = usersService.getUsers()
+
+    if (!users) {
+      throw new NotLoginError('未登入')
+    }
+
+    let cart: CartDto[] = (await getApiClient().get('/cart-service/cart/' + users.username)).data
 
     let updCart: CartDto | undefined = cart.find((t) => t.productId == productId)
 
@@ -39,7 +45,7 @@ class CartService {
       updCart.quantity = updCart.quantity + quantity
     } else {
       updCart = {
-        username: usersService.getUsers().username,
+        username: users.username,
         productId,
         quantity: quantity
       }
@@ -49,9 +55,13 @@ class CartService {
   }
 
   async deleteCartProduct(productId: String) {
-    await getApiClient().delete(
-      `/cart-service/cart/${usersService.getUsers().username}/${productId}`
-    )
+    const users = usersService.getUsers()
+
+    if (!users) {
+      throw new NotLoginError('未登入')
+    }
+
+    await getApiClient().delete(`/cart-service/cart/${users.username}/${productId}`)
   }
 }
 

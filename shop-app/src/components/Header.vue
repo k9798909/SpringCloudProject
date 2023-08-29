@@ -15,25 +15,17 @@ onMounted(init)
 const userStore = useUsersStore()
 watch(
   () => userStore.users,
-  () => {
-    console.log('isLoggedIn ref changed, do something!')
-    init()
-  }
+  () => init()
 )
 
 async function init() {
-  try {
-    let users: Users | null = usersService.getUsers()
-    if (users) {
-      state.name = users!.name
-      state.isLogin = true
-    } else {
-      state.isLogin = false
-      state.name = ''
-    }
-  } catch (error) {
-    console.log('init header error:', error)
-    alert(ViewMsg.ServerError)
+  let users: Users | null = usersService.getUsers()
+  if (users) {
+    state.name = users!.name
+    state.isLogin = true
+  } else {
+    state.isLogin = false
+    state.name = ''
   }
 }
 
