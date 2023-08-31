@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted, reactive, watch } from 'vue'
-import { ViewMsg } from '@/data/MsgEnum'
 import usersService from '@/services/UsersService'
 import headerItems from '@/data/HeaderItems'
 import type Users from '@/type/stores/Users'
@@ -36,105 +35,64 @@ function logoutEvent() {
 </script>
 
 <template>
-  <header>
-    <div class="logo-area">
-      <a href="/index">
-        <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-      </a>
-    </div>
-    <nav>
-      <div class="link-bar">
-        <router-link v-for="item in state.headerItems" :to="item.href">{{ item.name }}</router-link>
-      </div>
-    </nav>
-    <div class="login-area" v-if="!state.isLogin">
-      <router-link to="/login">登入</router-link>
-      <span>|</span>
-      <router-link to="/addUser">註冊</router-link>
-    </div>
-    <div class="login-area" v-if="state.isLogin">
-      <div>
-        <font-awesome-icon class="mx-1" :icon="['fas', 'user']" size="lg" /> {{ state.name }}
-      </div>
-      <div><button v-on:click="logoutEvent">登出</button></div>
-    </div>
-  </header>
+  <v-app-bar :elevation="1">
+    <v-toolbar-title>
+      <router-link class="d-flex" to="/index">
+        <img alt="Vue logo" class="logo" src="@/assets/logo.svg" />
+        <span class="ml-2">Shop-App</span>
+      </router-link>
+    </v-toolbar-title>
+
+    <router-link v-for="item in state.headerItems" :to="item.href" custom v-slot="{ navigate }">
+      <v-btn variant="text" @click="navigate">{{ item.name }}</v-btn>
+    </router-link>
+
+    <v-menu open-on-hover>
+      <template v-slot:activator="{ props }">
+        <v-btn v-bind="props"><v-icon icon="mdi-account" /></v-btn>
+      </template>
+
+      <v-list v-if="!state.isLogin">
+        <v-list-item>
+          <router-link to="/login" custom v-slot="{ navigate }">
+            <v-btn variant="text" @click="navigate">登入</v-btn>
+          </router-link>
+        </v-list-item>
+        <v-list-item>
+          <router-link to="/addUser" custom v-slot="{ navigate }">
+            <v-btn variant="text" @click="navigate">註冊</v-btn>
+          </router-link>
+        </v-list-item>
+      </v-list>
+
+      <v-list v-if="state.isLogin">
+        <v-list-item>
+          <router-link to="/users" custom v-slot="{ navigate }">
+            <v-btn variant="text" @click="navigate">個人資料</v-btn>
+          </router-link>
+        </v-list-item>
+        <v-list-item>
+          <v-btn variant="text" @click="logoutEvent">登出</v-btn>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </v-app-bar>
 </template>
 
 <style lang="scss" scoped>
-header {
-  $hover-color: #999;
-  $font-color: #213547;
-  $bg-color: #ffffff;
+.logo {
+  display: block;
+  width: 35px;
+  height: 35px;
+}
 
-  border-bottom: 1px solid rgba(60, 60, 60, 0.12);
-  line-height: 1.5;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  background-color: $bg-color;
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  backdrop-filter: saturate(180%) blur(20px);
-  padding: 0.5rem 1.5rem;
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
-  nav a,
-  .login-area a {
-    color: $font-color;
-    transition: ease-in-out color 0.15s;
-    padding: 0.3rem;
-    font-size: 1rem;
-  }
-
-  .login-area span {
-    padding-top: 0.2rem;
-    font-size: 1rem;
-  }
-
-  nav a:hover,
-  .login-area a:hover {
-    color: $hover-color;
-  }
-
-  .logo-area {
-    width: 5%;
-    .logo {
-      display: block;
-      width: 35px;
-      height: 35px;
-      padding-top: 0.3rem;
-    }
-  }
-
-  .login-area {
-    width: 25%;
-    padding: 0.3rem;
-    color: $font-color;
-    font-size: 1rem;
-    display: flex;
-    justify-content: flex-end;
-    button {
-      background-color: transparent;
-      border: 0px;
-      color: $font-color;
-    }
-    button:hover {
-      color: $hover-color;
-    }
-  }
-
-  nav {
-    width: 70%;
-    text-align: center;
-    display: flex;
-    justify-content: end;
-    .link-bar {
-      display: flex;
-      justify-content: space-around;
-    }
-
-    a {
-      padding: 0.3rem 2rem;
-    }
-  }
+a:hover {
+  color: inherit;
+  text-decoration: none;
 }
 </style>

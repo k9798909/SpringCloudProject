@@ -4,14 +4,18 @@ import Footer from '@/components/Footer.vue'
 </script>
 
 <template>
-  <Header></Header>
-  <router-view class="main"></router-view>
-  <Footer></Footer>
+  <v-layout>
+    <Header></Header>
+    <v-main>
+      <router-view class="main"></router-view>
+      <Footer></Footer>
+    </v-main>
+  </v-layout>
 </template>
 
 <style lang="scss" scoped>
 .main {
-  min-height: 85vh;
+  min-height: 80vh;
   padding: 1rem;
 }
 </style>
