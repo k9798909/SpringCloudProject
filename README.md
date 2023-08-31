@@ -9,7 +9,7 @@
 <p>6.管理微服務:springcloud</p>
 <p>目前已實作</p>
 <p>1.使用docker，並撰寫docker-compose。</p>
-<p>2.前端頁面使用vue3使用typescript、scss、BootstrapVue、pinia、axios。</p>
+<p>2.前端頁面使用vue3使用typescript、scss、vuetify、pinia、axios。</p>
 <p>3.購物車服務cart-app，使用golang撰寫，框架使用gin，資料庫選擇redis。</p>
 <p>4.商品服務product-service，使用springboot、java17、jpa，資料庫使用postgres。</p>
 <p>5.微服務管理使用spring cloud eureka管理微服務狀態，使用Spring Cloud Gateway統一管理各個微服務url。</p>
