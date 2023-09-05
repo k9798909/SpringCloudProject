@@ -43,3 +43,10 @@ services:
     image: eureka-server
     ports:
       - 8761:8761
+  shop-app:
+    build: ./shop-app
+    image: shop-app
+    ports:
+      - 5173:5173
+    depends_on:
+      - gatewar-server

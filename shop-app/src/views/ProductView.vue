@@ -21,6 +21,8 @@ watch(
 
 async function initProductList() {
   try {
+    console.log(productService.getAll())
+    console.log(...(await productService.getAll()).data)
     allProduct.push(...(await productService.getAll()).data)
     allProduct.push(...(await productService.getAll()).data)
     state.products.push(...allProduct)
