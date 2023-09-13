@@ -1,5 +1,7 @@
 package com.example.gatewarserver;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -42,6 +44,9 @@ public class GatewarServerApplication {
 	public CommandLineRunner start(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		return args -> {
 			Users users = new Users("test", passwordEncoder.encode("test"));
+			users.setBirthday(LocalDate.now());
+			users.setEmail("xxx@");
+			users.setAddress("eeeee");
 			users.setName("測試先生");
 			userRepository.deleteAll().log().subscribe();
 			userRepository.save(users).log().subscribe();

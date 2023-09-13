@@ -20,12 +20,12 @@ import reactor.core.publisher.Mono;
  */
 public class JwtSecurityContextRepository implements ServerSecurityContextRepository {
 	
-	private AuthJwtUtils jwtUtils;
+	private AuthJwtUtils authJwtUtils;
 	private JwtAuthenticationManager jwtAuthenticationManager;
 
-	public JwtSecurityContextRepository(AuthJwtUtils jwtUtils,JwtAuthenticationManager jwtAuthenticationManager) {
+	public JwtSecurityContextRepository(AuthJwtUtils authJwtUtils,JwtAuthenticationManager jwtAuthenticationManager) {
 		super();
-		this.jwtUtils = jwtUtils;
+		this.authJwtUtils = authJwtUtils;
 		this.jwtAuthenticationManager = jwtAuthenticationManager;
 	}
 	
@@ -51,7 +51,7 @@ public class JwtSecurityContextRepository implements ServerSecurityContextReposi
         
         String jwt = token.get().substring(7);
         
-        if (!jwtUtils.verify(jwt)) {
+        if (!authJwtUtils.validateToken(jwt)) {
         	return Mono.empty();
         }
         

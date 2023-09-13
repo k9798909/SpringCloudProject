@@ -24,7 +24,10 @@ CREATE TABLE users (
    id TEXT PRIMARY KEY DEFAULT concat(to_char(nextval('user_id_seq'), 'FM0000000000'), '1'),
    username TEXT NOT NULL,
    password TEXT NOT NULL,
-   name VARCHAR(255) NOT NULL
+   name VARCHAR(255) NOT NULL,
+   birthday DATE NOT NULL,
+   email VARCHAR(255) NOT NULL UNIQUE,
+   address VARCHAR(255)
 );
 
 CREATE INDEX username_index ON users (username);

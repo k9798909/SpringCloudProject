@@ -1,6 +1,7 @@
 package com.example.gatewarserver.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,11 +23,18 @@ public class Users implements UserDetails, Serializable {
 	private String username;
 	private String password;
 	private String name;
+    private LocalDate birthday;
+    private String email;
+    private String address;
 	@Transient
 	private boolean active = true;
 	@Transient
 	private Set<GrantedAuthority> roles = new HashSet<GrantedAuthority>();
-
+	
+	public Users() {
+		super();
+	}
+	
 	public Users(String username, String password) {
 		super();
 		this.username = username;
@@ -63,6 +71,46 @@ public class Users implements UserDetails, Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public LocalDate getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(LocalDate birthday) {
+		this.birthday = birthday;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public Set<GrantedAuthority> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<GrantedAuthority> roles) {
+		this.roles = roles;
 	}
 
 	@Override

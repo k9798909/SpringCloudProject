@@ -48,40 +48,14 @@ public class WebfluxSecurityConfig {
             .authorizeExchange()
             .pathMatchers("/login","/tokenVerify").permitAll()
             .pathMatchers(HttpMethod.GET,"/product-service/product","/product-service/product/*","/product-service/product/img/*").permitAll()
+            .pathMatchers(HttpMethod.POST,"/users/add").permitAll()
             .anyExchange().authenticated()
             .and()
 	        .formLogin().disable()
-//	        .oauth2Login()
 	        ;
 	    // @formatter:on
 		return http.build();
 	}
-	
-	/**
-	@Bean
-	public ReactiveClientRegistrationRepository clientRegistrationRepository() {
-		return new InMemoryReactiveClientRegistrationRepository(this.googleClientRegistration());
-	}
-
-	private ClientRegistration googleClientRegistration() {
-		// @formatter:off
-		return ClientRegistration.withRegistrationId("google")
-				.clientId("")
-				.clientSecret("")
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.redirectUri("http://localhost:8080/login/oauth2/code/google")
-				.scope("openid", "profile", "email", "address", "phone")
-				.authorizationUri("https://accounts.google.com/o/oauth2/v2/auth")
-				.tokenUri("https://www.googleapis.com/oauth2/v4/token")
-				.userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
-				.userNameAttributeName(IdTokenClaimNames.SUB)
-				.jwkSetUri("https://www.googleapis.com/oauth2/v3/certs")
-				.clientName("Google")
-				.build();
-		// @formatter:on
-	}
-	*/
 
 	@Bean
 	public ReactiveUserDetailsService userDetailsService() {
@@ -102,5 +76,5 @@ public class WebfluxSecurityConfig {
 	public JwtSecurityContextRepository jwtSecurityContextRepository(JwtAuthenticationManager jwtAuthenticationManager) {
 		return new JwtSecurityContextRepository(jwtUtils, jwtAuthenticationManager);
 	}
-
+	
 }

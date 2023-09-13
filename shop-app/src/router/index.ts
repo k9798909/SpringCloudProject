@@ -7,7 +7,14 @@ const productViewName = 'product'
 const loginViewName = 'login'
 const indexViewName = 'index'
 const homeViewName = 'home'
-const notCheckLogin: string[] = [productViewName, loginViewName, indexViewName, homeViewName]
+const addUsersViewName = 'addUsers'
+const notCheckLogin: string[] = [
+  productViewName,
+  loginViewName,
+  indexViewName,
+  homeViewName,
+  addUsersViewName
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,6 +53,11 @@ const router = createRouter({
       path: '/cart',
       name: 'cart',
       component: () => import('../views/CartView.vue')
+    },
+    {
+      path: '/users/add',
+      name: addUsersViewName,
+      component: () => import('../views/UsersView.vue')
     }
   ]
 })
@@ -55,6 +67,7 @@ router.beforeEach(loginCheck)
 //檢查是否有登入或逾期
 async function loginCheck(to: RouteLocationNormalized, from: RouteLocationNormalized) {
   try {
+    console.log(to)
     if (notCheckLogin.includes(to.name!.toString())) {
       return
     }

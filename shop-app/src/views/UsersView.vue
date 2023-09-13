@@ -16,124 +16,89 @@ const state = reactive({ form })
 
 <template>
   <main>
-    <div class="container w-50">
-      <div class="py-2 text-center">
-        <h2>使用者資料</h2>
-      </div>
+    <form>
+      <v-card class="mx-auto pa-12 pb-8" width="70%">
+        <v-card-title><h2 class="text-center">註冊</h2></v-card-title>
+        <div class="text-subtitle-1 text-medium-emphasis">帳號</div>
+        <v-text-field
+          v-model="state.form.username"
+          type="text"
+          id="username"
+          placeholder="輸入帳號"
+          variant="outlined"
+          density="compact"
+          required
+        />
+        <div class="text-subtitle-1 text-medium-emphasis">密碼</div>
+        <v-text-field
+          v-model="state.form.password"
+          type="password"
+          id="password"
+          placeholder="輸入密碼"
+          variant="outlined"
+          density="compact"
+          required
+        />
+        <div class="text-subtitle-1 text-medium-emphasis">密碼複驗</div>
+        <v-text-field
+          type="password"
+          id="chkPassword"
+          placeholder="輸入與上方相同的密碼"
+          variant="outlined"
+          density="compact"
+          required
+        />
+        <div class="text-subtitle-1 text-medium-emphasis">姓名</div>
+        <v-text-field
+          v-model="state.form.name"
+          type="text"
+          id="name"
+          placeholder="輸入姓名"
+          variant="outlined"
+          density="compact"
+          required
+        />
+        <div class="text-subtitle-1 text-medium-emphasis">出生日期</div>
+        <v-text-field
+          v-model="state.form.birthday"
+          type="date"
+          id="birthday"
+          variant="outlined"
+          density="compact"
+          required
+        />
+        <div class="text-subtitle-1 text-medium-emphasis">身分證字號</div>
+        <v-text-field
+          v-model="state.form.idn"
+          type="text"
+          id="idn"
+          variant="outlined"
+          density="compact"
+          placeholder="輸入身分證字號"
+        />
+        <div class="text-subtitle-1 text-medium-emphasis">電子信箱</div>
+        <v-text-field
+          v-model="state.form.email"
+          type="email"
+          id="email"
+          variant="outlined"
+          density="compact"
+          placeholder="輸入電子信箱"
+        />
+        <div class="text-subtitle-1 text-medium-emphasis">地址</div>
+        <v-text-field
+          v-model="state.form.address"
+          type="text"
+          id="address"
+          variant="outlined"
+          density="compact"
+          placeholder="輸入地址"
+          required
+        />
 
-      <div class="row justify-content-center">
-        <form>
-          <div class="row mb-3">
-            <div class="col-6">
-              <label for="name" class="form-label">姓名</label>
-              <input
-                v-model="state.form.name"
-                type="text"
-                class="form-control"
-                id="name"
-                placeholder="請輸入姓名"
-                required
-              />
-            </div>
-
-            <div class="col-6">
-              <label for="birthday" class="form-label">出生日期</label>
-              <input
-                v-model="state.form.birthday"
-                type="date"
-                class="form-control"
-                id="birthday"
-                required
-              />
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-6">
-              <label for="idn" class="form-label">身分證字號</label>
-              <input
-                v-model="state.form.idn"
-                type="text"
-                class="form-control"
-                id="idn"
-                placeholder="請輸入身分證字號"
-              />
-            </div>
-            <div class="col-6">
-              <label for="email" class="form-label">Email</label>
-              <input
-                v-model="state.form.email"
-                type="email"
-                class="form-control"
-                id="email"
-                placeholder="請輸入電子信箱"
-              />
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-12">
-              <label for="address" class="form-label">地址</label>
-              <input
-                v-model="state.form.address"
-                type="text"
-                class="form-control"
-                id="address"
-                placeholder="請輸入地址"
-                required
-              />
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-12">
-              <label for="username" class="form-label">帳號</label>
-              <div class="input-group">
-                <input
-                  v-model="state.form.username"
-                  type="text"
-                  class="form-control"
-                  id="username"
-                  placeholder="請輸入帳號"
-                  required
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-12">
-              <label for="password" class="form-label">密碼</label>
-              <div class="input-group">
-                <input
-                  v-model="state.form.password"
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  placeholder="請輸入密碼"
-                  required
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-12">
-              <label for="chkPassword" class="form-label">密碼複驗</label>
-              <div class="input-group">
-                <input
-                  type="password"
-                  class="form-control"
-                  id="chkPassword"
-                  placeholder="密碼複驗"
-                  required
-                />
-              </div>
-            </div>
-          </div>
-          <button class="w-100 btn btn-success btn-lg" type="submit">註冊</button>
-        </form>
-      </div>
-    </div>
+        <v-btn class="w-100 btn btn-success btn-lg" color="indigo" variant="elevated">確認</v-btn>
+      </v-card>
+    </form>
   </main>
 </template>
-<style lang="scss" scoped>
-.form-label {
-  margin-bottom: 0.2rem;
-}
-</style>
+<style lang="scss" scoped></style>

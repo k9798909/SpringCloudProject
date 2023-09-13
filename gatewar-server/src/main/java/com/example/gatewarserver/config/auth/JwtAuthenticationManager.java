@@ -37,7 +37,7 @@ public class JwtAuthenticationManager implements ReactiveAuthenticationManager {
 			return Mono.empty();
 		}
 		
-		if (!authJwtUtils.verify(jwt.get())) {
+		if (!authJwtUtils.validateToken(jwt.get())) {
 			log.error("發生jwt驗證失敗 jwt:[{}]",jwt.get());
 			return Mono.empty();
 		}

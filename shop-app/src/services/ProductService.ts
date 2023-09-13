@@ -8,6 +8,7 @@ class ProductService {
   }
 
   get(id: any): Promise<ResponseData<Product>> {
+    getHttp({test: 'xxx'}).get(`/product-service/product/${id}`)
     return getHttp().get(`/product-service/product/${id}`)
   }
 }

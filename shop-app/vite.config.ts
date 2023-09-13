@@ -6,7 +6,6 @@ import vue from '@vitejs/plugin-vue'
 // https://vitejs.dev/config/
 export default ({ mode }: any) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
-  console.log(process.env.VITE_API_URL)
   return defineConfig({
     plugins: [vue()],
     resolve: {

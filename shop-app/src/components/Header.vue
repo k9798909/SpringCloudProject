@@ -59,7 +59,7 @@ function logoutEvent() {
           </router-link>
         </v-list-item>
         <v-list-item>
-          <router-link to="/addUser" custom v-slot="{ navigate }">
+          <router-link to="/users/add" custom v-slot="{ navigate }">
             <v-btn variant="text" @click="navigate">註冊</v-btn>
           </router-link>
         </v-list-item>

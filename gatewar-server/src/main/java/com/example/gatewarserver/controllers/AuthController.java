@@ -3,7 +3,6 @@ package com.example.gatewarserver.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +34,7 @@ public class AuthController {
 				.map(userDetails -> (Users) userDetails)
 				.map(users -> ResponseEntity.ok(new LoginRes(users.getUsername(), 
 															 users.getName(),
-															 authJwtUtils.generate(users.getUsername())))
+															 authJwtUtils.generateToken(users.getUsername())))
 				)
 				.switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()));
 	}
@@ -50,13 +49,8 @@ public class AuthController {
 
 	@PostMapping("/tokenVerify")
 	public Mono<ResponseEntity<Boolean>> tokenVerify(@RequestBody TokenReq req) {
-		ResponseEntity<Boolean> res = ResponseEntity.ok(authJwtUtils.verify(req.token));
+		ResponseEntity<Boolean> res = ResponseEntity.ok(authJwtUtils.validateToken(req.token));
 		return Mono.just(res);
-	}
-
-	@GetMapping("/hello")
-	public ResponseEntity<String> hello() {
-		return ResponseEntity.ok("working...");
 	}
 
 	public record LoginReq(String username, String password) {
