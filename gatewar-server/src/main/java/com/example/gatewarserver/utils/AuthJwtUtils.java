@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -16,19 +16,19 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+@Component
 public class AuthJwtUtils {
 	private final Key SECRET_KEY;
-	private static Logger log = LoggerFactory.getLogger(AuthJwtUtils.class);
 	private static final long EXPIRATION_TIME = 60 * 60 * 1000;
 	
-	public AuthJwtUtils(String key) {
+	public AuthJwtUtils(@Value("${jwt.key}") String key) {
 		this.SECRET_KEY = Keys.hmacShaKeyFor(Decoders.BASE64.decode(key));
 	}
 
 	public String generateToken(String username) {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("username", username);
-
+		
 		return Jwts.builder()
 				.setClaims(claims)
 				.setExpiration(new Date(Instant.now().toEpochMilli() + EXPIRATION_TIME))

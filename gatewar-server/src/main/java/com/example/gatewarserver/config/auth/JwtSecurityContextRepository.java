@@ -40,17 +40,14 @@ public class JwtSecurityContextRepository implements ServerSecurityContextReposi
         Optional<String> token = Optional.fromNullable(
 				exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION)
         );
-        
         if (!token.isPresent()) {
         	return Mono.empty();
         }
-        
         if (!token.get().startsWith("Bearer ")) {
         	return Mono.empty();
         }
         
         String jwt = token.get().substring(7);
-        
         if (!authJwtUtils.validateToken(jwt)) {
         	return Mono.empty();
         }
