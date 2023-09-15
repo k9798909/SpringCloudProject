@@ -23,7 +23,7 @@ export class UsersService {
 
   //檢查token是否過期。
   async verifyToken(token: string): Promise<boolean> {
-    const res: ResponseData<boolean> = await getHttp().post('/tokenVerify', { token: token })
+    const res: ResponseData<boolean> = await getHttp().post('/tokenVerify', { token })
     return res.data
   }
 }

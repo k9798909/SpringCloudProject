@@ -5,9 +5,8 @@ import type CartProduct from '@/type/dto/CartProductDto'
 
 let cart: CartProduct[] = []
 const state = reactive({ cart })
-onMounted(init)
 
-async function init() {
+async function loadCartProduct() {
   cartService
     .getCartProductList()
     .then((cartList) => {
@@ -28,6 +27,8 @@ async function deleteCartProduct(e: MouseEvent, productId: string) {
       console.error('cartService deleteCartProduct error:', e)
     })
 }
+
+onMounted(loadCartProduct)
 </script>
 
 <template>

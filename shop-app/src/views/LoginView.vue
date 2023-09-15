@@ -8,11 +8,12 @@ import { ConstantKey } from '@/data/ConstantKey'
 import type LoginForm from '@/type/form/LoginForm'
 import { useRouter, type Router } from 'vue-router'
 
+const router:Router = useRouter()
+
 //session訊息用完移除
 let msg: Ref<string> = ref(sessionStorage.getItem(ConstantKey.LOGIN_SESSION_MSG) || '')
 sessionStorage.removeItem(ConstantKey.LOGIN_SESSION_MSG)
-
-//密碼能見
+//密碼能見度
 let visible: Ref<boolean> = ref(false)
 
 let loginForm: LoginForm = {
@@ -20,8 +21,6 @@ let loginForm: LoginForm = {
   password: ''
 }
 const state = reactive({ loginForm })
-
-const router:Router = useRouter()
 
 const loginEvent = async () => {
   msg.value = ''
@@ -45,8 +44,7 @@ const loginEvent = async () => {
       console.error('login error:', e)
       msg.value = ViewMsg.ServerError
     })
-
-}
+  }
 </script>
 
 <template>

@@ -2,7 +2,7 @@ package com.example.gatewarserver.req;
 
 import java.time.LocalDate;
 
-public record AddUsersReq(
+public record SignUpReq(
 		String name,
 		LocalDate birthday,
 		String email,

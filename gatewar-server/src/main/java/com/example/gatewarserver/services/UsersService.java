@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.gatewarserver.model.Users;
 import com.example.gatewarserver.repository.UserRepository;
-import com.example.gatewarserver.req.AddUsersReq;
+import com.example.gatewarserver.req.SignUpReq;
 import com.example.gatewarserver.req.LoginReq;
 import com.example.gatewarserver.req.TokenReq;
 import com.example.gatewarserver.res.LoginRes;
@@ -42,7 +42,7 @@ public class UsersService {
 	}
 
 	@Transactional
-	public Mono<Users> save(AddUsersReq req) {
+	public Mono<Users> save(SignUpReq req) {
 		Users users = new Users();
 		users.setUsername(req.username());
 		users.setPassword(passwordEncoder.encode(req.password()));

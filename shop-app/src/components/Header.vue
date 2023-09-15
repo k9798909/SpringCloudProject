@@ -1,37 +1,38 @@
 <script setup lang="ts">
-import { onMounted, reactive, watch } from 'vue'
+import { onMounted, ref, watch, type Ref } from 'vue'
 import usersService from '@/services/UsersService'
 import headerItems from '@/data/HeaderItems'
 import type Users from '@/type/stores/Users'
 import router from '@/router'
 import useUsersStore from '@/stores/UseUsersStore'
 
-let isLogin: boolean = false
-let name: string = ''
-const state = reactive({ isLogin, name, headerItems, useUsersStore })
-onMounted(init)
-
 const userStore = useUsersStore()
-watch(
-  () => userStore.users,
-  () => init()
-)
+let isLogin: Ref<boolean> = ref(false)
+let name: Ref<string> = ref('')
 
-async function init() {
+async function loadUserStatus(): Promise<void> {
   let users: Users | null = usersService.getUsers()
   if (users) {
-    state.name = users!.name
-    state.isLogin = true
+    name.value = users!.name
+    isLogin.value = true
   } else {
-    state.isLogin = false
-    state.name = ''
+    isLogin.value = false
+    name.value = ''
   }
 }
 
-function logoutEvent() {
+function logoutEvent(): void {
   usersService.logout()
   router.push('/login')
 }
+
+onMounted(loadUserStatus)
+
+//監聽store有更動觸發init
+watch(
+  () => userStore.users,
+  () => loadUserStatus()
+)
 </script>
 
 <template>
@@ -43,7 +44,7 @@ function logoutEvent() {
       </router-link>
     </v-toolbar-title>
 
-    <router-link v-for="item in state.headerItems" :to="item.href" custom v-slot="{ navigate }">
+    <router-link v-for="item in headerItems" :to="item.href" custom v-slot="{ navigate }">
       <v-btn variant="text" @click="navigate">{{ item.name }}</v-btn>
     </router-link>
 
@@ -52,22 +53,22 @@ function logoutEvent() {
         <v-btn v-bind="props"><v-icon icon="mdi-account" /></v-btn>
       </template>
 
-      <v-list v-if="!state.isLogin">
+      <v-list v-if="!isLogin">
         <v-list-item>
           <router-link to="/login" custom v-slot="{ navigate }">
             <v-btn variant="text" @click="navigate">登入</v-btn>
           </router-link>
         </v-list-item>
         <v-list-item>
-          <router-link to="/users/add" custom v-slot="{ navigate }">
+          <router-link to="/signUp" custom v-slot="{ navigate }">
             <v-btn variant="text" @click="navigate">註冊</v-btn>
           </router-link>
         </v-list-item>
       </v-list>
 
-      <v-list v-if="state.isLogin">
+      <v-list v-if="isLogin">
         <v-list-item>
-          <router-link to="/users" custom v-slot="{ navigate }">
+          <router-link to="/signUp" custom v-slot="{ navigate }">
             <v-btn variant="text" @click="navigate">個人資料</v-btn>
           </router-link>
         </v-list-item>

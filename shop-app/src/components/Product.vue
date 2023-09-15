@@ -11,7 +11,7 @@ const router = useRouter()
 const props = defineProps<Prop>()
 const imgUrl = `/api/product-service/product/img/${props.product.id}`
 
-async function addCardProduct() {
+async function addCardProduct(): Promise<void> {
   cartService.updateCartProduct(props.product.id, 1)
     .then(() => {
       alert('加入購物車成功')

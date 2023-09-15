@@ -1,39 +1,36 @@
 <script setup lang="ts">
 import Product from '../components/Product.vue'
-import { reactive, onMounted, watch } from 'vue'
+import { onMounted, watch, ref, type Ref } from 'vue'
 import productService from '@/services/ProductService'
 import type ProductDto from '@/type/dto/ProductDto'
 
 const allProduct: ProductDto[] = []
-const products: ProductDto[] = []
-let searchInput = ''
-let searchResult: boolean = true
-const state = reactive({ searchInput, products, searchResult })
-onMounted(initProductList)
+let searchResult: Ref<boolean> = ref(true)
+let searchInput: Ref<string> = ref('')
+let products: Ref<ProductDto[]> = ref([])
 
-watch(
-  () => state.products,
-  () => {
-    state.searchResult = state.products.length != 0
-  },
-  { deep: true }
-)
-
-async function initProductList() {
+async function loadProductList(): Promise<void> {
   try {
-    console.log(productService.getAll())
-    console.log(...(await productService.getAll()).data)
-    allProduct.push(...(await productService.getAll()).data)
-    allProduct.push(...(await productService.getAll()).data)
-    state.products.push(...allProduct)
+    allProduct.push(...(await productService.findAll()).data)
+    products.value.push(...allProduct)
   } catch (e) {
     console.error('掛載所有商品時發生錯誤', e)
   }
 }
 
-function searchEvent(e: MouseEvent) {
-  state.products = allProduct.filter((t) => t.name.includes(state.searchInput))
+function searchEvent(e: MouseEvent): void {
+  products.value = allProduct.filter((t) => t.name.includes(searchInput.value))
 }
+
+onMounted(loadProductList)
+
+watch(
+  () => products.value,
+  () => {
+    searchResult.value = products.value.length != 0
+  },
+  { deep: true }
+)
 </script>
 
 <template>
@@ -46,7 +43,7 @@ function searchEvent(e: MouseEvent) {
         append-inner-icon="mdi-magnify"
         single-line
         hide-details
-        v-model="state.searchInput"
+        v-model="searchInput"
         @click:append-inner="(e: MouseEvent) => searchEvent(e)"
       ></v-text-field>
 
@@ -67,15 +64,14 @@ function searchEvent(e: MouseEvent) {
       </div>
     </v-parallax>
 
-    <v-container v-if="state.products.length != 0" min-width="500px">
+    <v-container v-if="products.length != 0" min-width="500px">
       <v-row>
-        <v-col cols="12" lg="3" md="4" sm="6" v-for="product in state.products">
+        <v-col cols="12" lg="3" md="4" sm="6" v-for="product in products">
           <Product class="mx-auto" :product="product"></Product>
         </v-col>
       </v-row>
       <v-pagination :length="1"></v-pagination>
     </v-container>
-    
   </main>
 </template>
 <style lang="scss" scoped></style>

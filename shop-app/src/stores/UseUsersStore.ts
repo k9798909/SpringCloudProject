@@ -5,10 +5,10 @@ import type LoginResDto from '@/type/dto/LoginResDto'
 const useUsersStore = defineStore('usersStore', {
   state: () => {
     const storage: Storage = localStorage
+    const storeUsers = storage.getItem('users')
     let users: Users | null = null
-
-    if (storage.getItem('users')) {
-      const localUsers = JSON.parse(storage.getItem('users')!) as Users
+    if (storeUsers) {
+      const localUsers = JSON.parse(storeUsers) as Users
       users = { ...localUsers }
     }
     return { users, storage }

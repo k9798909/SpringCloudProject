@@ -7,13 +7,13 @@ const productViewName = 'product'
 const loginViewName = 'login'
 const indexViewName = 'index'
 const homeViewName = 'home'
-const addUsersViewName = 'addUsers'
+const SignUpViewName = 'signUp'
 const notCheckLogin: string[] = [
   productViewName,
   loginViewName,
   indexViewName,
   homeViewName,
-  addUsersViewName
+  SignUpViewName
 ]
 
 const router = createRouter({
@@ -42,12 +42,7 @@ const router = createRouter({
     {
       path: '/users',
       name: 'users',
-      component: () => import('../views/UsersView.vue')
-    },
-    {
-      path: '/addUser',
-      name: 'addUser',
-      component: () => import('../views/UsersView.vue')
+      component: () => import('../views/SignUpView.vue')
     },
     {
       path: '/cart',
@@ -55,9 +50,9 @@ const router = createRouter({
       component: () => import('../views/CartView.vue')
     },
     {
-      path: '/users/add',
-      name: addUsersViewName,
-      component: () => import('../views/UsersView.vue')
+      path: '/signUp',
+      name: SignUpViewName,
+      component: () => import('../views/SignUpView.vue')
     }
   ]
 })
@@ -67,21 +62,17 @@ router.beforeEach(loginCheck)
 //檢查是否有登入或逾期
 async function loginCheck(to: RouteLocationNormalized, from: RouteLocationNormalized) {
   try {
-    console.log(to)
     if (notCheckLogin.includes(to.name!.toString())) {
       return
     }
-
-    const token = usersService.getUsers()?.token
-
     //檢查是否登入
+    const token = usersService.getUsers()?.token
     if (!token) {
       sessionStorage.setItem(ConstantKey.LOGIN_SESSION_MSG, '請登入使用者帳號')
       return '/login'
     }
-
     //檢查是否過期
-    let isVerify = await usersService.verifyToken(token)
+    const isVerify = await usersService.verifyToken(token)
     if (!isVerify) {
       usersService.logout()
       sessionStorage.setItem(ConstantKey.LOGIN_SESSION_MSG, '請登入使用者帳號')
