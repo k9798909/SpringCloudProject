@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NotLoginError from '@/data/NotLoginError'
+import NotLoginError from '@/common/NotLoginError'
 import cartService from '@/services/CartService'
 import type ProductDto from '@/types/dto/ProductDto'
 import { useRouter } from 'vue-router'
@@ -53,3 +53,4 @@ async function addCardProduct(): Promise<void> {
   overflow: hidden;
 }
 </style>
+@/common/NotLoginError

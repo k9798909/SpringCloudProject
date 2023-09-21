@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, type RouteLocationNormalized } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import usersService from '@/services/UsersService'
-import { ConstantKey } from '@/data/ConstantKey'
+import { ConstantKey } from '@/common/ConstantKey'
 
 const productViewName = 'product'
 const loginViewName = 'login'

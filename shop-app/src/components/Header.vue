@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch, type Ref } from 'vue'
 import usersService from '@/services/UsersService'
-import headerItems from '@/data/HeaderItems'
+import headerItems from '@/common/HeaderItems'
 import type Users from '@/types/stores/Users'
 import router from '@/router'
 import useUsersStore from '@/stores/UseUsersStore'
@@ -97,3 +97,4 @@ a:hover {
   text-decoration: none;
 }
 </style>
+@/common/HeaderItems

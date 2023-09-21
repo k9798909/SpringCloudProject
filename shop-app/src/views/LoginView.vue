@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import usersService from '@/services/UsersService'
 import { reactive, ref, type Ref } from 'vue'
-import { ViewMsg } from '@/data/MsgEnum'
-import { NetworkErrorCode } from '@/data/HttpEnum'
+import { ViewMsg } from '@/common/MsgEnum'
+import { NetworkErrorCode } from '@/common/HttpEnum'
 import type { AxiosError } from 'axios'
-import { ConstantKey } from '@/data/ConstantKey'
+import { ConstantKey } from '@/common/ConstantKey'
 import type LoginForm from '@/types/form/LoginForm'
 import { useRouter, type Router } from 'vue-router'
 
@@ -99,3 +99,4 @@ const loginEvent = async () => {
   </div>
 </template>
 <style lang="scss" scoped></style>
+@/common/MsgEnum@/common/HttpEnum@/common/ConstantKey

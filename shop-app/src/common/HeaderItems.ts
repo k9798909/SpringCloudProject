@@ -1,4 +1,4 @@
-import type HeaderItem from '@/type/dto/HeaderItemDto'
+import type HeaderItem from '@/types/dto/HeaderItemDto'
 
 const headerItems: HeaderItem[] = [
   {

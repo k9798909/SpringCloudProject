@@ -1,5 +1,5 @@
 import axios, { type AxiosInstance } from 'axios'
-import { ContentTypeEnum } from '../data/HttpEnum'
+import { ContentTypeEnum } from '../common/HttpEnum'
 import usersService from '@/services/UsersService'
 
 const getApiClient = (options = {}): AxiosInstance => {
