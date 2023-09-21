@@ -8,5 +8,5 @@ import com.example.gatewarserver.model.Users;
 import reactor.core.publisher.Mono;
 
 public interface UserRepository extends R2dbcRepository<Users, String> {
-	Mono<UserDetails> findByUsername(String username);
+	Mono<Users> findByUsername(String username);
 }

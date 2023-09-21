@@ -1,5 +1,8 @@
 package com.example.gatewarserver.services;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,8 +51,12 @@ public class UsersService {
 		users.setPassword(passwordEncoder.encode(req.password()));
 		users.setName(req.name());
 		users.setEmail(req.email());
-		users.setBirthday(req.birthday());
+		users.setBirthday(LocalDate.parse(req.birthday(),DateTimeFormatter.ISO_DATE));
 		users.setAddress(req.address());
 		return userRepository.save(users);
+	}
+	
+	public Mono<Users> findBy(String username) {
+		return userRepository.findByUsername(username);
 	}
 }

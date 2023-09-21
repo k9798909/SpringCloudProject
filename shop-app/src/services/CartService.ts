@@ -1,9 +1,9 @@
 import getApiClient from '@/http'
 import usersService from './UsersService'
-import type { CartDto } from '@/type/dto/CartDto'
+import type { CartDto } from '@/types/dto/CartDto'
 import productService from './ProductService'
-import type CartProduct from '@/type/dto/CartProductDto'
-import type ProductDto from '@/type/dto/ProductDto'
+import type CartProduct from '@/types/dto/CartProductDto'
+import type ProductDto from '@/types/dto/ProductDto'
 import NotLoginError from '@/data/NotLoginError'
 
 class CartService {

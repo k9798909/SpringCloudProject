@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import NotLoginError from '@/data/NotLoginError'
 import cartService from '@/services/CartService'
-import type ProductDto from '@/type/dto/ProductDto'
+import type ProductDto from '@/types/dto/ProductDto'
 import { useRouter } from 'vue-router'
 export interface Prop {
   product: ProductDto

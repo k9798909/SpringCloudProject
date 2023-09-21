@@ -2,7 +2,7 @@
 import Product from '../components/Product.vue'
 import { onMounted, watch, ref, type Ref } from 'vue'
 import productService from '@/services/ProductService'
-import type ProductDto from '@/type/dto/ProductDto'
+import type ProductDto from '@/types/dto/ProductDto'
 
 const allProduct: ProductDto[] = []
 let searchResult: Ref<boolean> = ref(true)

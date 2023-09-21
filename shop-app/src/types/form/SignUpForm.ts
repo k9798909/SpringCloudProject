@@ -1,4 +1,4 @@
-export default interface AddUsersForm {
+export default interface SignUpForm {
   name: string
   birthday: string
   idn: string

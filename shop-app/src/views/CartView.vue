@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import cartService from '@/services/CartService'
 import { reactive, onMounted } from 'vue'
-import type CartProduct from '@/type/dto/CartProductDto'
+import type CartProduct from '@/types/dto/CartProductDto'
 
 let cart: CartProduct[] = []
 const state = reactive({ cart })

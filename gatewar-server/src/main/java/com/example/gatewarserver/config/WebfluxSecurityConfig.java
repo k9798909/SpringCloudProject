@@ -31,7 +31,7 @@ public class WebfluxSecurityConfig {
 		// @formatter:off
 	    http.exceptionHandling()
 	        .authenticationEntryPoint((swe, e) ->
-	            Mono.fromRunnable(() -> swe.getResponse().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR))
+	            Mono.fromRunnable(() -> swe.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED))
 	        ).accessDeniedHandler((swe, e) ->
 	            Mono.fromRunnable(() -> swe.getResponse().setStatusCode(HttpStatus.FORBIDDEN))
 	        ).and()
@@ -43,7 +43,7 @@ public class WebfluxSecurityConfig {
             .authorizeExchange()
             .pathMatchers("/login","/tokenVerify").permitAll()
             .pathMatchers(HttpMethod.GET,"/product-service/product","/product-service/product/*","/product-service/product/img/*").permitAll()
-            .pathMatchers(HttpMethod.POST,"/users/add").permitAll()
+            .pathMatchers("/public/**").permitAll()
             .anyExchange().authenticated()
 	        ;
 	    // @formatter:on

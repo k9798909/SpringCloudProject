@@ -2,7 +2,7 @@
 import { onMounted, ref, watch, type Ref } from 'vue'
 import usersService from '@/services/UsersService'
 import headerItems from '@/data/HeaderItems'
-import type Users from '@/type/stores/Users'
+import type Users from '@/types/stores/Users'
 import router from '@/router'
 import useUsersStore from '@/stores/UseUsersStore'
 

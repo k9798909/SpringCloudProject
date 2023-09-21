@@ -5,7 +5,7 @@ import { ViewMsg } from '@/data/MsgEnum'
 import { NetworkErrorCode } from '@/data/HttpEnum'
 import type { AxiosError } from 'axios'
 import { ConstantKey } from '@/data/ConstantKey'
-import type LoginForm from '@/type/form/LoginForm'
+import type LoginForm from '@/types/form/LoginForm'
 import { useRouter, type Router } from 'vue-router'
 
 const router:Router = useRouter()

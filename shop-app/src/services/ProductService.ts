@@ -1,6 +1,6 @@
-import type Product from '@/type/dto/ProductDto'
+import type Product from '@/types/dto/ProductDto'
 import getHttp from '@/http'
-import type ResponseData from '@/type/http/ResponseData'
+import type ResponseData from '@/types/http/ResponseData'
 
 class ProductService {
   findAll(): Promise<ResponseData<Product[]>> {
