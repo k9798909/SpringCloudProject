@@ -28,6 +28,10 @@ async function deleteCartProduct(e: MouseEvent, productId: string) {
     })
 }
 
+function checkout() {
+  alert('未實作')
+}
+
 onMounted(loadCartProduct)
 </script>
 
@@ -74,9 +78,7 @@ onMounted(loadCartProduct)
 
         <v-row v-if="state.cart.length > 0">
           <v-col cols="12" class="d-flex flex-row-reverse">
-            <router-link to="/" custom v-slot="{ navigate }">
-              <v-btn class="mx-0" @click="navigate" append-icon="mdi-arrow-right-bold">結帳</v-btn>
-            </router-link>
+            <v-btn class="mx-0" @click="checkout" append-icon="mdi-arrow-right-bold">結帳</v-btn>
           </v-col>
         </v-row>
 

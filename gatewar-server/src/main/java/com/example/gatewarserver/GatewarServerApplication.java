@@ -22,7 +22,7 @@ import com.example.gatewarserver.repository.UserRepository;
 public class GatewarServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GatewarServerApplication.class, args);
+		 SpringApplication.run(GatewarServerApplication.class, args);
 	}
 
 	@Value("${gateway.uri.product-service}")
@@ -45,7 +45,7 @@ public class GatewarServerApplication {
 		return args -> {
 			Users users = new Users("test", passwordEncoder.encode("test"));
 			users.setBirthday(LocalDate.now());
-			users.setEmail("xxx@");
+			users.setEmail("xxx@xxx.com");
 			users.setAddress("eeeee");
 			users.setName("測試先生");
 			userRepository.deleteAll().log().subscribe();

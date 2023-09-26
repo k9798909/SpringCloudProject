@@ -42,7 +42,7 @@ const router = createRouter({
     {
       path: '/users',
       name: 'users',
-      component: () => import('../views/SignUp/SignUpView.vue')
+      component: () => import('../views/EditUsers/EditUsersView.vue')
     },
     {
       path: '/cart',
@@ -62,24 +62,26 @@ router.beforeEach(loginCheck)
 //檢查是否有登入或逾期
 async function loginCheck(to: RouteLocationNormalized, from: RouteLocationNormalized) {
   try {
+    const token = usersService.getStoreUsers()?.token || ''
+    const isVerify = await usersService.verifyToken(token)
+
+    //確定token是否過期如果過期將token刪除
+    if (!isVerify) {
+      usersService.logout()
+    }
+
+    //頁面是否需要驗證
     if (notCheckLogin.includes(to.name!.toString())) {
       return
     }
-    //檢查是否登入
-    const token = usersService.getUsers()?.token
-    if (!token) {
-      sessionStorage.setItem(ConstantKey.LOGIN_SESSION_MSG, '請登入使用者帳號')
-      return '/login'
-    }
-    //檢查是否過期
-    const isVerify = await usersService.verifyToken(token)
-    if (!isVerify) {
-      usersService.logout()
-      sessionStorage.setItem(ConstantKey.LOGIN_SESSION_MSG, '請登入使用者帳號')
-      return '/login'
+
+    //檢查token是否有效
+    if (token && isVerify) {
+      return
     }
 
-    return
+    sessionStorage.setItem(ConstantKey.LOGIN_SESSION_MSG, '請登入使用者帳號')
+    return '/login'
   } catch (error) {
     console.error('loginCheck error', error)
     sessionStorage.setItem(ConstantKey.LOGIN_SESSION_MSG, '發生錯誤請重新登入')

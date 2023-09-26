@@ -99,4 +99,3 @@ const loginEvent = async () => {
   </div>
 </template>
 <style lang="scss" scoped></style>
-@/common/MsgEnum@/common/HttpEnum@/common/ConstantKey

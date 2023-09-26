@@ -4,7 +4,9 @@ import type ResponseData from '@/types/http/ResponseData'
 import getHttp from '@/http'
 import useUsersStore from '@/stores/UseUsersStore'
 import type Users from '@/types/stores/Users'
-import type SignUpForm  from '@/types/form/SignUpForm'
+import type SignUpForm from '@/types/form/SignUpForm'
+import NotLoginError from '@/common/NotLoginError'
+import type EditUsersForm from '@/types/form/EditUsersForm'
 
 export class UsersService {
   async login(loginDto: LoginDto): Promise<void> {
@@ -18,7 +20,7 @@ export class UsersService {
     useUsersStore().logout()
   }
 
-  getUsers(): Users | null {
+  getStoreUsers(): Users | null {
     return useUsersStore().getUsers
   }
 
@@ -34,6 +36,21 @@ export class UsersService {
 
   async checkUsername(username: string): Promise<boolean> {
     return (await getHttp().get('public/users/checkUsername', { params: { username } })).data
+  }
+
+  async findEditUsersByLoginInfo(): Promise<EditUsersForm> {
+    const users = useUsersStore().getUsers
+
+    if (!users) {
+      throw new NotLoginError('未登入')
+    }
+
+    const username = users.username
+    return (await getHttp().get(`/users/edit`, { params: { username } })).data
+  }
+
+  async updateForEditPage(form: EditUsersForm): Promise<void> {
+    await getHttp().post(`/users/edit`, form)
   }
 }
 

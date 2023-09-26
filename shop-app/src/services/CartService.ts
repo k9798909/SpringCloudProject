@@ -8,7 +8,7 @@ import NotLoginError from '@/common/NotLoginError'
 
 class CartService {
   async getCartProductList(): Promise<CartProduct[]> {
-    const users = usersService.getUsers()
+    const users = usersService.getStoreUsers()
     if (!users) {
       throw new NotLoginError('未登入')
     }
@@ -30,9 +30,15 @@ class CartService {
   }
 
   async updateCartProduct(productId: string, quantity: number): Promise<void> {
-    const users = usersService.getUsers()
+    const users = usersService.getStoreUsers()
     if (!users) {
       throw new NotLoginError('未登入')
+    }
+
+    const isVerify = await usersService.verifyToken(users.token)
+    if (!isVerify) {
+      usersService.logout()
+      throw new NotLoginError('登入已逾期')
     }
 
     let cart: CartDto[] = (await getApiClient().get('/cart-service/cart/' + users.username)).data
@@ -51,7 +57,7 @@ class CartService {
   }
 
   async deleteCartProduct(productId: String): Promise<void> {
-    const users = usersService.getUsers()
+    const users = usersService.getStoreUsers()
     if (!users) {
       throw new NotLoginError('未登入')
     }

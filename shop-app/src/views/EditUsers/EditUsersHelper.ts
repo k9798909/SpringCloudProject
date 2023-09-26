@@ -1,16 +1,15 @@
-import type SignUpForm from '@/types/form/SignUpForm'
 import { isEmailValid, isIdnValid, maxLength, require } from '@/validate/Rules'
 import usersService from '@/services/UsersService'
+import type EditUsersForm from '@/types/form/EditUsersForm'
 
-export function buildSignUpForm(): SignUpForm {
+export function buildFormData(): EditUsersForm {
   return {
     name: '',
     birthday: new Date().toLocaleDateString('en-CA'),
     email: '',
     address: '',
     username: '',
-    password: '',
-    chkPassword: ''
+    id: ''
   }
 }
 

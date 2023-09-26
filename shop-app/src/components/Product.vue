@@ -5,24 +5,32 @@ import type ProductDto from '@/types/dto/ProductDto'
 import { useRouter } from 'vue-router'
 export interface Prop {
   product: ProductDto
+  successAlert: boolean
 }
 
 const router = useRouter()
 const props = defineProps<Prop>()
+const emit = defineEmits(['update:successAlert'])
 const imgUrl = `/api/product-service/product/img/${props.product.id}`
 
 async function addCardProduct(): Promise<void> {
-  cartService.updateCartProduct(props.product.id, 1)
+  cartService
+    .updateCartProduct(props.product.id, 1)
     .then(() => {
-      alert('加入購物車成功')
+      emit('update:successAlert', true)
+      console.log('dddd')
     })
-    .catch(e => {
+    .catch((e) => {
       if (e instanceof NotLoginError) {
         router.push('/login')
         return
       }
       console.error('addCardProduct error', e)
     })
+}
+
+async function productDetill(): Promise<void> {
+  alert('未實作')
 }
 </script>
 <template>
@@ -39,7 +47,7 @@ async function addCardProduct(): Promise<void> {
     </v-card-text>
     <v-card-actions>
       <v-btn color="indigo" variant="elevated" @click="addCardProduct"> 加入購物車 </v-btn>
-      <v-btn color="indigo" variant="elevated"> 明細 </v-btn>
+      <v-btn color="indigo" variant="elevated" @click="productDetill"> 明細 </v-btn>
     </v-card-actions>
   </v-card>
 </template>

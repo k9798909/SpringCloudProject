@@ -4,6 +4,5 @@ export default interface SignUpForm {
   email: string
   address: string
   username: string
-  password: string
-  chkPassword: string
+  id:string
 }

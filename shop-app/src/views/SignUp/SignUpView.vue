@@ -4,6 +4,7 @@ import usersService from '@/services/UsersService'
 import type SignUpForm from '@/types/form/SignUpForm'
 import { useRouter, type Router } from 'vue-router'
 import * as SignUpHelper from './SignUpHelper'
+import SuccessDialog from '@/components/SuccessDialog.vue'
 
 const router: Router = useRouter()
 let dialogShow: Ref<boolean> = ref(false)
@@ -20,7 +21,7 @@ async function submit(e: MouseEvent) {
     }
 
     await usersService.signUp(formParams.value)
-    
+
     dialogShow.value = true
     setTimeout(function () {
       router.push('/index')
@@ -34,8 +35,8 @@ async function submit(e: MouseEvent) {
 
 <template>
   <main>
-    <v-form ref="form" s>
-      <v-card class="mx-auto pa-12 pb-8" width="70%">
+    <v-form ref="form">
+      <v-card class="mx-auto pa-12 pb-8" width="50%">
         <v-card-title><h2 class="text-center">註冊</h2></v-card-title>
         <div class="text-subtitle-1 text-medium-emphasis">帳號</div>
         <v-text-field
@@ -88,16 +89,6 @@ async function submit(e: MouseEvent) {
           variant="outlined"
           density="compact"
         />
-        <div class="text-subtitle-1 text-medium-emphasis">身分證字號</div>
-        <v-text-field
-          v-model="formParams.idn"
-          type="text"
-          id="idn"
-          variant="outlined"
-          density="compact"
-          placeholder="輸入身分證字號"
-          :rules="SignUpHelper.getIdnRules()"
-        />
         <div class="text-subtitle-1 text-medium-emphasis">電子信箱</div>
         <v-text-field
           v-model="formParams.email"
@@ -131,36 +122,14 @@ async function submit(e: MouseEvent) {
     </v-form>
 
     <!--  成功視窗 [[ -->
-    <v-dialog v-model="dialogShow" width="50%">
-      <v-sheet
-        elevation="12"
-        max-width="600"
-        rounded="lg"
-        width="100%"
-        class="pa-4 text-center mx-auto"
-      >
-        <v-icon class="mb-5" color="success" icon="mdi-check-circle" size="112"></v-icon>
-        <h2 class="text-h5 mb-6">註冊成功</h2>
-        <p class="mb-4 text-medium-emphasis text-body-2">
-          註冊成功點選回到首頁，或者等待5秒系統將自動跳轉至首頁。
-        </p>
-        <v-divider class="mb-4"></v-divider>
-        <div class="text-end">
-          <v-btn
-            @click="() => router.push('/index')"
-            class="text-none"
-            color="success"
-            rounded
-            variant="flat"
-            width="90"
-          >
-            回到首頁
-          </v-btn>
-        </div>
-      </v-sheet>
-    </v-dialog>
+    <SuccessDialog
+      :dialogShow="dialogShow"
+      title="註冊成功"
+      btnName="回到首頁"
+      content="註冊成功點選回到首頁，或者等待5秒系統將自動跳轉至首頁。"
+      :btnFunction="() => router.push('/index')"
+    />
     <!--  ]] -->
   </main>
 </template>
 <style lang="scss" scoped></style>
-./SignUpMethod ./SignUpHelper

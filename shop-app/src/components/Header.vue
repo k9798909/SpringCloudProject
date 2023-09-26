@@ -11,7 +11,7 @@ let isLogin: Ref<boolean> = ref(false)
 let name: Ref<string> = ref('')
 
 async function loadUserStatus(): Promise<void> {
-  let users: Users | null = usersService.getUsers()
+  let users: Users | null = usersService.getStoreUsers()
   if (users) {
     name.value = users!.name
     isLogin.value = true
@@ -68,7 +68,7 @@ watch(
 
       <v-list v-if="isLogin">
         <v-list-item>
-          <router-link to="/signUp" custom v-slot="{ navigate }">
+          <router-link to="/users" custom v-slot="{ navigate }">
             <v-btn variant="text" @click="navigate">個人資料</v-btn>
           </router-link>
         </v-list-item>
@@ -97,4 +97,3 @@ a:hover {
   text-decoration: none;
 }
 </style>
-@/common/HeaderItems
