@@ -29,3 +29,26 @@
 2. 開啟package.bat。
 
 3. 執行完後即可開啟，http://localhost:5173/。
+
+## 圖片功能展示
+1.首頁
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/73f6911f-d51a-490d-bb6a-af2d85c42897)
+2.註冊
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/47df51eb-6918-4e5c-a12e-9ac71109642e)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/19e9be75-1417-499e-a9bf-043ae3500bbc)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/a4f99d58-dc4a-40b4-98d5-96ebabe42313)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/55c26dc6-cd8a-4365-b973-0b6087c9012e)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/45ae7946-c1ca-4d30-a997-2e0a91eb08d1)
+
+
+
+
+
+
+
+
+
+
+
+
+
