@@ -34,33 +34,31 @@
 
 ## 圖片功能展示
 1.首頁
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/73f6911f-d51a-490d-bb6a-af2d85c42897)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/07fb505a-1b2e-43f3-a61a-ea3f07e4ef01)
+
 2.註冊
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/47df51eb-6918-4e5c-a12e-9ac71109642e)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/19e9be75-1417-499e-a9bf-043ae3500bbc)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/a4f99d58-dc4a-40b4-98d5-96ebabe42313)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/55c26dc6-cd8a-4365-b973-0b6087c9012e)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/45ae7946-c1ca-4d30-a997-2e0a91eb08d1)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/2118a790-aa2d-4d36-b17a-771ac8a22a5a)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/7bc871ed-8816-4774-83f6-c0123e11af4c)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/822f2b67-e379-4a89-b680-62048bbfed87)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/40b57be0-0150-4d51-b485-d8f6e179219e)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/497a6b88-a80a-4d88-8273-4e168bc1805b)
 3.登入
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/64a38028-9130-48d0-ab1b-9a7bde1e41f8)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/8c1808e8-4344-4b07-8708-52907ee2ab26)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/d0f87ca3-d0a1-4099-a63c-65af32a60b59)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/26e2b688-953e-457f-af63-313b8047236e)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/caf2158f-ca95-4459-a253-d387632701cf)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/a922f139-724c-4bc2-86d8-0ed0dad1fd4e)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/b2d04338-3402-4dac-a655-12d5d8a1a25f)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/bc0288fe-a3fd-44ff-85a6-cdd3d5bf2b5e)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/7b2f9ec3-3d7f-4380-b86e-dea7b3e3b23e)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/e8d1f221-750c-48eb-82b6-927ef8920243)
 4.個人資訊查詢修改
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/0ed5f01d-f277-4ee7-b6f2-15520d2af52d)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/66295a6f-798c-4ec6-9c72-0b971259fd94)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/6afbe2ed-cec3-494e-99aa-ebb66afdff0e)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/f243a677-8599-4c1a-af0f-ca5c3183bfe4)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/bcf27994-5495-4463-ab8a-346ba734faa0)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/2c4ac0a6-7b44-4f30-a773-84d30805964d)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/0b71eec5-c138-49f4-bb25-346603ca73ea)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/95dea571-2750-4d48-a307-8ccb8bb6939c)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/27e38c82-6e49-4247-a84e-7ad622101c6c)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/4bee54bb-87de-42c0-bb69-6407b6133acf)
 5.商品展示加入購物車
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/4407dd7f-8ac7-4c52-bf17-64c409a6849f)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/63a11556-eef0-4ab6-bd08-656700ac37f0)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/fe7611cc-7a85-4da4-a63b-1403942e41f1)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/a5f89f50-e963-4c74-9939-10da531c8ca1)
-![image](https://github.com/k9798909/my_microservice_project/assets/62507948/7acc16f7-8428-4235-aa0d-6c7e7640fc8b)
-
-
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/203b38be-9d7b-407b-8a78-36ba9c75e7db)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/fcdf952c-fb44-48f4-9db5-b0c4f102d71f)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/04d55700-d75a-487e-aa65-47f3f392dcbc)
+![image](https://github.com/k9798909/my_microservice_project/assets/62507948/88b71109-cb9e-4476-96b3-ffe11df1afd8)
 
 
 
