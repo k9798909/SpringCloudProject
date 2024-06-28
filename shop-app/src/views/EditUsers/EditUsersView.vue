@@ -1,3 +1,52 @@
+<script setup lang="ts">
+import { onMounted, ref, type Ref } from 'vue'
+import usersService from '@/services/UsersService'
+import type EditUsersForm from '@/types/form/EditUsersForm'
+import * as EditUsersHelper from './EditUsersHelper'
+import SuccessDialog from '@/components/SuccessDialog.vue'
+
+const dialogShow = ref(false)
+const isEdit: Ref<boolean> = ref(false)
+const toggle: Ref<boolean> = ref(false)
+const form: Ref<HTMLFormElement | null> = ref(null)
+const editForm: Ref<EditUsersForm> = ref(EditUsersHelper.buildFormData())
+
+async function submit(e: MouseEvent) {
+  try {
+    e.preventDefault()
+
+    const valid = (await form.value!.validate()).valid
+    if (!valid) {
+      return
+    }
+
+    await usersService.updateForEditPage(editForm.value)
+    isEdit.value = false
+    dialogShow.value = true
+  } catch (error) {
+    console.error('修改失敗', error)
+    alert('伺服器異常')
+  }
+}
+
+onMounted(() => {
+  usersService
+    .findEditUsersByLoginInfo()
+    .then((data) => {
+      editForm.value.id = data.id
+      editForm.value.birthday = data.birthday
+      editForm.value.email = data.email
+      editForm.value.address = data.address
+      editForm.value.username = data.username
+      editForm.value.name = data.name
+    })
+    .catch((e) => {
+      alert('server 異常，請重新登入')
+      console.error('異常', e)
+    })
+})
+</script>
+
 <template>
   <main>
     <v-form class="form" ref="form">
@@ -86,56 +135,6 @@
     <!--  ]] -->
   </main>
 </template>
-
-<script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue'
-import usersService from '@/services/UsersService'
-import type EditUsersForm from '@/types/form/EditUsersForm'
-import * as EditUsersHelper from './EditUsersHelper'
-import SuccessDialog from '@/components/SuccessDialog.vue'
-
-const dialogShow = ref(false)
-const isEdit: Ref<boolean> = ref(false)
-const toggle: Ref<boolean> = ref(false)
-const form: Ref<HTMLFormElement | null> = ref(null)
-const editForm: Ref<EditUsersForm> = ref(EditUsersHelper.buildFormData())
-
-async function submit(e: MouseEvent) {
-  try {
-    e.preventDefault()
-
-    const valid = (await form.value!.validate()).valid
-    if (!valid) {
-      return
-    }
-
-    await usersService.updateForEditPage(editForm.value)
-    isEdit.value = false
-    dialogShow.value = true
-  } catch (error) {
-    console.error('修改失敗', error)
-    alert('伺服器異常')
-  }
-}
-
-onMounted(() => {
-  usersService
-    .findEditUsersByLoginInfo()
-    .then((data) => {
-      editForm.value.id = data.id
-      editForm.value.birthday = data.birthday
-      editForm.value.email = data.email
-      editForm.value.address = data.address
-      editForm.value.username = data.username
-      editForm.value.name = data.name
-    })
-    .catch((e) => {
-      alert('server 異常，請重新登入')
-      console.error('異常', e)
-    })
-})
-</script>
-
 <style lang="scss" scoped>
 :deep(.v-field__input:read-only) {
   color: gray;

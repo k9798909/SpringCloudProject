@@ -1,3 +1,40 @@
+<script setup lang="ts">
+import Product from '../components/Product.vue'
+import { onMounted, watch, ref, type Ref } from 'vue'
+import productService from '@/services/ProductService'
+import type ProductDto from '@/types/dto/ProductDto'
+import SuccessDialog from '@/components/SuccessDialog.vue'
+
+const allProduct: ProductDto[] = []
+let searchResult: Ref<boolean> = ref(true)
+let searchInput: Ref<string> = ref('')
+let products: Ref<ProductDto[]> = ref([])
+let successAlert: Ref<boolean> = ref(false)
+
+async function loadProductList(): Promise<void> {
+  try {
+    allProduct.push(...(await productService.findAll()).data)
+    products.value.push(...allProduct)
+  } catch (e) {
+    console.error('掛載所有商品時發生錯誤', e)
+  }
+}
+
+function searchEvent(e: MouseEvent): void {
+  products.value = allProduct.filter((t) => t.name.includes(searchInput.value))
+}
+
+onMounted(loadProductList)
+
+watch(
+  () => products.value,
+  () => {
+    searchResult.value = products.value.length != 0
+  },
+  { deep: true }
+)
+</script>
+
 <template>
   <main>
     <div class="mx-auto w-50 d-flex">
@@ -49,42 +86,4 @@
     <!--  ]] -->
   </main>
 </template>
-
-<script setup lang="ts">
-import Product from '../components/Product.vue'
-import { onMounted, watch, ref, type Ref } from 'vue'
-import productService from '@/services/ProductService'
-import type ProductDto from '@/types/dto/ProductDto'
-import SuccessDialog from '@/components/SuccessDialog.vue'
-
-const allProduct: ProductDto[] = []
-let searchResult: Ref<boolean> = ref(true)
-let searchInput: Ref<string> = ref('')
-let products: Ref<ProductDto[]> = ref([])
-let successAlert: Ref<boolean> = ref(false)
-
-async function loadProductList(): Promise<void> {
-  try {
-    allProduct.push(...(await productService.findAll()).data)
-    products.value.push(...allProduct)
-  } catch (e) {
-    console.error('掛載所有商品時發生錯誤', e)
-  }
-}
-
-function searchEvent(e: MouseEvent): void {
-  products.value = allProduct.filter((t) => t.name.includes(searchInput.value))
-}
-
-onMounted(loadProductList)
-
-watch(
-  () => products.value,
-  () => {
-    searchResult.value = products.value.length != 0
-  },
-  { deep: true }
-)
-</script>
-
 <style lang="scss" scoped></style>

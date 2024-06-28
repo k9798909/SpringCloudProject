@@ -1,3 +1,40 @@
+<script setup lang="ts">
+import cartService from '@/services/CartService'
+import { reactive, onMounted } from 'vue'
+import type CartProduct from '@/types/dto/CartProductDto'
+
+let cart: CartProduct[] = []
+const state = reactive({ cart })
+
+async function loadCartProduct() {
+  cartService
+    .getCartProductList()
+    .then((cartList) => {
+      state.cart.push(...cartList)
+    })
+    .catch((e) => {
+      console.error('cartService getCartList error:', e)
+    })
+}
+
+async function deleteCartProduct(e: MouseEvent, productId: string) {
+  await cartService
+    .deleteCartProduct(productId)
+    .then(() => {
+      state.cart = state.cart.filter((t) => t.productId != productId)
+    })
+    .catch((e) => {
+      console.error('cartService deleteCartProduct error:', e)
+    })
+}
+
+function checkout() {
+  alert('未實作')
+}
+
+onMounted(loadCartProduct)
+</script>
+
 <template>
   <div>
     <v-card border class="mx-auto my-5" width="60%" min-width="400px">
@@ -61,42 +98,5 @@
     </v-card>
   </div>
 </template>
-
-<script setup lang="ts">
-import cartService from '@/services/CartService'
-import { reactive, onMounted } from 'vue'
-import type CartProduct from '@/types/dto/CartProductDto'
-
-let cart: CartProduct[] = []
-const state = reactive({ cart })
-
-async function loadCartProduct() {
-  cartService
-    .getCartProductList()
-    .then((cartList) => {
-      state.cart.push(...cartList)
-    })
-    .catch((e) => {
-      console.error('cartService getCartList error:', e)
-    })
-}
-
-async function deleteCartProduct(e: MouseEvent, productId: string) {
-  await cartService
-    .deleteCartProduct(productId)
-    .then(() => {
-      state.cart = state.cart.filter((t) => t.productId != productId)
-    })
-    .catch((e) => {
-      console.error('cartService deleteCartProduct error:', e)
-    })
-}
-
-function checkout() {
-  alert('未實作')
-}
-
-onMounted(loadCartProduct)
-</script>
 
 <style lang="scss" scoped></style>

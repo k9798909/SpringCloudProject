@@ -1,3 +1,52 @@
+<script setup lang="ts">
+import usersService from '@/services/UsersService'
+import { reactive, ref, type Ref } from 'vue'
+import { ViewMsg } from '@/common/MsgEnum'
+import { NetworkErrorCode } from '@/common/HttpEnum'
+import type { AxiosError } from 'axios'
+import { ConstantKey } from '@/common/ConstantKey'
+import type LoginForm from '@/types/form/LoginForm'
+import { useRouter, type Router } from 'vue-router'
+
+const router:Router = useRouter()
+
+//session訊息用完移除
+let msg: Ref<string> = ref(sessionStorage.getItem(ConstantKey.LOGIN_SESSION_MSG) || '')
+sessionStorage.removeItem(ConstantKey.LOGIN_SESSION_MSG)
+//密碼能見度
+let visible: Ref<boolean> = ref(false)
+
+let loginForm: LoginForm = {
+  username: '',
+  password: ''
+}
+const state = reactive({ loginForm })
+
+const loginEvent = async () => {
+  msg.value = ''
+
+  if (!(state.loginForm.username && state.loginForm.password)) {
+    msg.value = '請輸入帳號及密碼'
+    return
+  }
+
+  usersService.login(state.loginForm)
+    .then(() => {
+      router.push('/index')
+    })
+    .catch((e) => {
+      let axiosError: AxiosError = e as AxiosError
+      if (NetworkErrorCode.Unauthorized == axiosError.response?.status) {
+        msg.value = ViewMsg.InvalidUsernameOrPassword
+        return
+      }
+      
+      console.error('login error:', e)
+      msg.value = ViewMsg.ServerError
+    })
+  }
+</script>
+
 <template>
   <div>
     <v-img
@@ -49,54 +98,4 @@
     </v-card>
   </div>
 </template>
-
-<script setup lang="ts">
-import usersService from '@/services/UsersService'
-import { reactive, ref, type Ref } from 'vue'
-import { ViewMsg } from '@/common/MsgEnum'
-import { NetworkErrorCode } from '@/common/HttpEnum'
-import type { AxiosError } from 'axios'
-import { ConstantKey } from '@/common/ConstantKey'
-import type LoginForm from '@/types/form/LoginForm'
-import { useRouter, type Router } from 'vue-router'
-
-const router:Router = useRouter()
-
-//session訊息用完移除
-let msg: Ref<string> = ref(sessionStorage.getItem(ConstantKey.LOGIN_SESSION_MSG) || '')
-sessionStorage.removeItem(ConstantKey.LOGIN_SESSION_MSG)
-//密碼能見度
-let visible: Ref<boolean> = ref(false)
-
-let loginForm: LoginForm = {
-  username: '',
-  password: ''
-}
-const state = reactive({ loginForm })
-
-const loginEvent = async () => {
-  msg.value = ''
-
-  if (!(state.loginForm.username && state.loginForm.password)) {
-    msg.value = '請輸入帳號及密碼'
-    return
-  }
-
-  usersService.login(state.loginForm)
-    .then(() => {
-      router.push('/index')
-    })
-    .catch((e) => {
-      let axiosError: AxiosError = e as AxiosError
-      if (NetworkErrorCode.Unauthorized == axiosError.response?.status) {
-        msg.value = ViewMsg.InvalidUsernameOrPassword
-        return
-      }
-      
-      console.error('login error:', e)
-      msg.value = ViewMsg.ServerError
-    })
-  }
-</script>
-
 <style lang="scss" scoped></style>

@@ -1,3 +1,38 @@
+<script setup lang="ts">
+import { ref, type Ref } from 'vue'
+import usersService from '@/services/UsersService'
+import type SignUpForm from '@/types/form/SignUpForm'
+import { useRouter, type Router } from 'vue-router'
+import * as SignUpHelper from './SignUpHelper'
+import SuccessDialog from '@/components/SuccessDialog.vue'
+
+const router: Router = useRouter()
+let dialogShow: Ref<boolean> = ref(false)
+const form: Ref<HTMLFormElement | null> = ref(null)
+const formParams: Ref<SignUpForm> = ref(SignUpHelper.buildSignUpForm())
+
+async function submit(e: MouseEvent) {
+  try {
+    e.preventDefault()
+
+    const valid = (await form.value!.validate()).valid
+    if (!valid) {
+      return
+    }
+
+    await usersService.signUp(formParams.value)
+
+    dialogShow.value = true
+    setTimeout(function () {
+      router.push('/index')
+    }, 5000)
+  } catch (error) {
+    console.error('註冊失敗', error)
+    alert('伺服器異常')
+  }
+}
+</script>
+
 <template>
   <main>
     <v-form ref="form">
@@ -97,40 +132,4 @@
     <!--  ]] -->
   </main>
 </template>
-
-<script setup lang="ts">
-import { ref, type Ref } from 'vue'
-import usersService from '@/services/UsersService'
-import type SignUpForm from '@/types/form/SignUpForm'
-import { useRouter, type Router } from 'vue-router'
-import * as SignUpHelper from './SignUpHelper'
-import SuccessDialog from '@/components/SuccessDialog.vue'
-
-const router: Router = useRouter()
-let dialogShow: Ref<boolean> = ref(false)
-const form: Ref<HTMLFormElement | null> = ref(null)
-const formParams: Ref<SignUpForm> = ref(SignUpHelper.buildSignUpForm())
-
-async function submit(e: MouseEvent) {
-  try {
-    e.preventDefault()
-
-    const valid = (await form.value!.validate()).valid
-    if (!valid) {
-      return
-    }
-
-    await usersService.signUp(formParams.value)
-
-    dialogShow.value = true
-    setTimeout(function () {
-      router.push('/index')
-    }, 5000)
-  } catch (error) {
-    console.error('註冊失敗', error)
-    alert('伺服器異常')
-  }
-}
-</script>
-
 <style lang="scss" scoped></style>
